@@ -9,6 +9,10 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { CartProvider } from "@/lib/cart";
+import { Nav } from "@/components/site/Nav";
+import { Footer } from "@/components/site/Footer";
+import { FloatingContacts } from "@/components/site/FloatingContacts";
 
 function NotFoundComponent() {
   return (
@@ -112,7 +116,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CartProvider>
+        <div className="relative min-h-screen bg-background text-foreground">
+          <Nav />
+          <Outlet />
+          <Footer />
+          <FloatingContacts />
+        </div>
+      </CartProvider>
     </QueryClientProvider>
   );
 }
