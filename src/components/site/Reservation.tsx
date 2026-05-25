@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const services = [
   { id: "dine", label: "تناول داخل المطعم", desc: "احجز طاولتك" },
@@ -9,6 +9,10 @@ const services = [
 
 export function Reservation() {
   const [service, setService] = useState("dine");
+  const [ref, setRef] = useState("------");
+  useEffect(() => {
+    setRef(String(Math.floor(Math.random() * 900000 + 100000)));
+  }, []);
   return (
     <section id="reservation" className="relative py-32 px-6 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,oklch(0.3_0.1_40/0.3),transparent_70%)]" />
@@ -64,7 +68,7 @@ export function Reservation() {
               type="button"
               className="md:col-span-2 mt-4 py-4 rounded-full bg-gradient-gold text-[hsl(0_0%_8%)] font-bold shadow-gold hover:scale-[1.02] transition-transform"
             >
-              تأكيد الحجز · ANM-MAG-{Math.floor(Math.random() * 900000 + 100000)}
+              تأكيد الحجز · ANM-MAG-{ref}
             </button>
           </form>
         </motion.div>
