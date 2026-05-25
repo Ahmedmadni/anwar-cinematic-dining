@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 export function Footer() {
   return (
     <footer className="relative border-t border-border pt-20 pb-10 px-6">
@@ -26,10 +28,10 @@ export function Footer() {
         <div>
           <h4 className="font-display text-lg text-[var(--gold)] mb-4">روابط سريعة</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="#menu" className="hover:text-[var(--gold)]">المنيو</a></li>
-            <li><a href="#branches" className="hover:text-[var(--gold)]">الفروع</a></li>
-            <li><a href="#reservation" className="hover:text-[var(--gold)]">الحجوزات</a></li>
-            <li><a href="#story" className="hover:text-[var(--gold)]">قصتنا</a></li>
+            <li><Link to="/menu" className="hover:text-[var(--gold)]">المنيو</Link></li>
+            <li><Link to="/branches" className="hover:text-[var(--gold)]">الفروع</Link></li>
+            <li><Link to="/reservation" className="hover:text-[var(--gold)]">الحجوزات</Link></li>
+            <li><Link to="/about" className="hover:text-[var(--gold)]">قصتنا</Link></li>
           </ul>
         </div>
       </div>
