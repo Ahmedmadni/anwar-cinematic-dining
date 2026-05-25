@@ -9,6 +9,10 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { CartProvider } from "@/lib/cart";
+import { Nav } from "@/components/site/Nav";
+import { Footer } from "@/components/site/Footer";
+import { FloatingContacts } from "@/components/site/FloatingContacts";
 
 function NotFoundComponent() {
   return (
@@ -85,6 +89,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Reem+Kufi:wght@400;500;600;700&family=Rakkas&family=Marhey:wght@400;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -112,7 +122,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CartProvider>
+        <div className="relative min-h-screen bg-background text-foreground">
+          <Nav />
+          <Outlet />
+          <Footer />
+          <FloatingContacts />
+        </div>
+      </CartProvider>
     </QueryClientProvider>
   );
 }
