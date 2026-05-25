@@ -4,13 +4,14 @@ import { useCart } from "@/lib/cart";
 import { ShoppingBag, Menu as MenuIcon, X } from "lucide-react";
 import { useState } from "react";
 
-const links = [
+type NavLink = { to: "/" | "/menu" | "/branches" | "/reservation" | "/about"; label: string; exact?: boolean };
+const links: NavLink[] = [
   { to: "/", label: "الرئيسية", exact: true },
   { to: "/menu", label: "المنيو" },
   { to: "/branches", label: "الفروع" },
   { to: "/reservation", label: "احجز طاولتك" },
   { to: "/about", label: "قصتنا" },
-] as const;
+];
 
 export function Nav() {
   const { count } = useCart();
