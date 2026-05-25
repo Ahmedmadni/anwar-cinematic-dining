@@ -1,17 +1,18 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 export function Embers({ count = 30 }: { count?: number }) {
-  const embers = useMemo(
-    () =>
-      Array.from({ length: count }).map((_, i) => ({
+  const [embers, setEmbers] = useState<Array<{ left: number; delay: number; duration: number; size: number; opacity: number }>>([]);
+  useEffect(() => {
+    setEmbers(
+      Array.from({ length: count }).map(() => ({
         left: Math.random() * 100,
         delay: Math.random() * 8,
         duration: 6 + Math.random() * 8,
         size: 2 + Math.random() * 4,
         opacity: 0.4 + Math.random() * 0.6,
-      })),
-    [count]
-  );
+      }))
+    );
+  }, [count]);
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {embers.map((e, i) => (
