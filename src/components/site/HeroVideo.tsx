@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Embers } from "./Embers";
 import hero from "@/assets/hero-grill.jpg";
+import heroVideo from "@/assets/hero-grill.mp4.asset.json";
 import dish1 from "@/assets/dish-mixed-grill.jpg";
 import dish2 from "@/assets/dish-tagine.jpg";
 import { Flame, BookOpen, MapPin, CalendarHeart } from "lucide-react";
@@ -13,8 +14,7 @@ const tiles = [
   { to: "/cart", label: "اطلب توصيل", desc: "خلال ٣٠ دقيقة", icon: Flame },
 ] as const;
 
-const VIDEO_SRC =
-  "https://assets.mixkit.co/videos/4753/4753-720.mp4";
+const VIDEO_SRC = heroVideo.url;
 
 export function HeroVideo() {
   return (
