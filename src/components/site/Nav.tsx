@@ -1,21 +1,23 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/cart";
-import { ShoppingBag, Menu as MenuIcon, X } from "lucide-react";
+import { ShoppingBag, Menu as MenuIcon, X, Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
+import { usePrefs } from "@/lib/preferences";
 
-type NavLink = { to: "/" | "/menu" | "/branches" | "/reservation" | "/about"; label: string; exact?: boolean };
+type NavLink = { to: "/" | "/menu" | "/branches" | "/reservation" | "/about"; key: string; exact?: boolean };
 const links: NavLink[] = [
-  { to: "/", label: "الرئيسية", exact: true },
-  { to: "/menu", label: "المنيو" },
-  { to: "/branches", label: "الفروع" },
-  { to: "/reservation", label: "احجز طاولتك" },
-  { to: "/about", label: "قصتنا" },
+  { to: "/", key: "nav.home", exact: true },
+  { to: "/menu", key: "nav.menu" },
+  { to: "/branches", key: "nav.branches" },
+  { to: "/reservation", key: "nav.reservation" },
+  { to: "/about", key: "nav.about" },
 ];
 
 export function Nav() {
   const { count } = useCart();
   const [open, setOpen] = useState(false);
+  const { t, theme, toggleTheme, lang, toggleLang } = usePrefs();
 
   return (
     <motion.header
@@ -46,16 +48,31 @@ export function Nav() {
                 inactiveProps={{ className: "text-foreground/80 hover:text-[var(--gold)]" }}
                 className="relative text-sm font-medium transition-colors"
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={toggleLang}
+              className="h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition text-xs font-bold"
+              aria-label="Toggle language"
+              title={lang === "ar" ? "English" : "العربية"}
+            >
+              <Languages className="h-4 w-4 text-[var(--gold)]" />
+            </button>
+            <button
+              onClick={toggleTheme}
+              className="h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4 text-[var(--gold)]" /> : <Moon className="h-4 w-4 text-[var(--gold)]" />}
+            </button>
             <Link
               to="/cart"
               className="relative h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition"
-              aria-label="السلة"
+              aria-label={t("nav.cart")}
             >
               <ShoppingBag className="h-5 w-5 text-[var(--gold)]" />
               {count > 0 && (
@@ -68,7 +85,7 @@ export function Nav() {
               to="/reservation"
               className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold text-sm shadow-gold hover:scale-[1.03] transition-transform"
             >
-              اطلب الآن
+              {t("nav.order")}
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
@@ -95,7 +112,7 @@ export function Nav() {
                 activeProps={{ className: "text-[var(--gold)] bg-[oklch(0.84_0.16_84/0.08)]" }}
                 className="px-4 py-3 rounded-xl text-sm font-medium hover:bg-[oklch(0.84_0.16_84/0.06)] transition"
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
           </motion.div>
