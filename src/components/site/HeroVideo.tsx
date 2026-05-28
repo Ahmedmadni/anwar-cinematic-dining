@@ -1,32 +1,50 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Embers } from "./Embers";
 import hero from "@/assets/hero-grill.jpg";
 import heroVideo from "@/assets/hero-grill.mp4.asset.json";
 import dish1 from "@/assets/dish-mixed-grill.jpg";
 import dish2 from "@/assets/dish-tagine.jpg";
+import bg2 from "@/assets/bg-grill-2.jpg";
+import bg3 from "@/assets/bg-feast.jpg";
+import bg4 from "@/assets/bg-dessert.jpg";
 import { Flame, BookOpen, MapPin, CalendarHeart } from "lucide-react";
+import { usePrefs } from "@/lib/preferences";
 
 const tiles = [
-  { to: "/menu", label: "تصفح المنيو", desc: "أكثر من ٤٠ صنف بلدي", icon: BookOpen },
-  { to: "/reservation", label: "احجز طاولتك", desc: "تجربة عشاء كاملة", icon: CalendarHeart },
-  { to: "/branches", label: "فروعنا", desc: "٥ فروع في مغاغة", icon: MapPin },
-  { to: "/cart", label: "اطلب توصيل", desc: "خلال ٣٠ دقيقة", icon: Flame },
+  { to: "/menu", key: "tiles.menu", icon: BookOpen },
+  { to: "/reservation", key: "tiles.book", icon: CalendarHeart },
+  { to: "/branches", key: "tiles.branches", icon: MapPin },
+  { to: "/cart", key: "tiles.delivery", icon: Flame },
 ] as const;
 
 const VIDEO_SRC = heroVideo.url;
+const BACKDROPS = [hero, bg2, bg3, bg4];
 
 export function HeroVideo() {
+  const { t } = usePrefs();
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const i = setInterval(() => setIdx((v) => (v + 1) % BACKDROPS.length), 6500);
+    return () => clearInterval(i);
+  }, []);
+
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center">
-      {/* Layer 1 — Ken-burns photo (always visible fallback) */}
-      <div className="absolute inset-0">
-        <img
-          src={hero}
-          alt="مشاوي أنوار المدينة"
-          className="absolute inset-0 w-full h-full object-cover ken-burns"
+      {/* Layer 1 — Rotating ken-burns photo stack */}
+      <AnimatePresence>
+        <motion.img
+          key={idx}
+          src={BACKDROPS[idx]}
+          alt="أنوار المدينة"
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1.18 }}
+          exit={{ opacity: 0 }}
+          transition={{ opacity: { duration: 1.4 }, scale: { duration: 7, ease: "linear" } }}
+          className="absolute inset-0 w-full h-full object-cover"
         />
-      </div>
+      </AnimatePresence>
 
       {/* Layer 2 — Cinematic video (loads over photo if available) */}
       <video
@@ -58,28 +76,31 @@ export function HeroVideo() {
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
             مغاغة · المنيا · مفتوح الآن
           </div>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-strong text-[11px] tracking-[0.35em] text-[var(--gold)] mb-6">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
+            {t("hero.badge")}
+          </div>
           <h1 className="font-poster text-5xl sm:text-7xl md:text-8xl leading-[1.05] mb-6">
-            <span className="block shimmer-gold">أنوار المدينة</span>
+            <span className="block shimmer-gold">{t("hero.title")}</span>
             <span className="block text-foreground/95 text-3xl sm:text-4xl md:text-5xl mt-3 font-display">
-              الطعم المصري بصياغة سينمائية
+              {t("hero.subtitle")}
             </span>
           </h1>
           <p className="text-foreground/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-9">
-            مشويات على الفحم البلدي، طواجن تطهى ببطء، كشري بنكهة الجدّات، وحلويات شرقية فاخرة —
-            تجربة طعام لا تُنسى في قلب الصعيد.
+            {t("hero.desc")}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               to="/menu"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold shadow-gold hover:scale-[1.04] transition-transform"
             >
-              <BookOpen className="h-5 w-5" /> تصفح المنيو
+              <BookOpen className="h-5 w-5" /> {t("hero.cta.menu")}
             </Link>
             <Link
               to="/reservation"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl glass-strong font-bold hover:border-[var(--gold)] transition"
             >
-              <CalendarHeart className="h-5 w-5 text-[var(--gold)]" /> احجز طاولة
+              <CalendarHeart className="h-5 w-5 text-[var(--gold)]" /> {t("hero.cta.book")}
             </Link>
           </div>
         </motion.div>
@@ -91,17 +112,20 @@ export function HeroVideo() {
           transition={{ duration: 1, delay: 0.4 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-14"
         >
-          {tiles.map((t) => (
-            <Link
-              key={t.to}
-              to={t.to}
-              className="group glass-strong rounded-2xl p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
-            >
-              <t.icon className="h-6 w-6 text-[var(--gold)] mb-3" />
-              <div className="font-display text-lg group-hover:text-[var(--gold)] transition-colors">{t.label}</div>
-              <div className="text-xs text-muted-foreground mt-1">{t.desc}</div>
-            </Link>
-          ))}
+          {tiles.map((tile) => {
+            const Icon = tile.icon;
+            return (
+              <Link
+                key={tile.to}
+                to={tile.to}
+                className="group glass-strong rounded-2xl p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
+              >
+                <Icon className="h-6 w-6 text-[var(--gold)] mb-3" />
+                <div className="font-display text-lg group-hover:text-[var(--gold)] transition-colors">{t(tile.key)}</div>
+                <div className="text-xs text-muted-foreground mt-1">{t(tile.key + ".d")}</div>
+              </Link>
+            );
+          })}
         </motion.div>
 
         {/* Decorative side dishes (desktop) */}

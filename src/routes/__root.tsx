@@ -13,6 +13,8 @@ import { CartProvider } from "@/lib/cart";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { FloatingContacts } from "@/components/site/FloatingContacts";
+import { PreferencesProvider } from "@/lib/preferences";
+import { Assistant } from "@/components/site/Assistant";
 
 function NotFoundComponent() {
   return (
@@ -122,14 +124,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <div className="relative min-h-screen bg-background text-foreground">
-          <Nav />
-          <Outlet />
-          <Footer />
-          <FloatingContacts />
-        </div>
-      </CartProvider>
+      <PreferencesProvider>
+        <CartProvider>
+          <div className="relative min-h-screen bg-background text-foreground">
+            <Nav />
+            <Outlet />
+            <Footer />
+            <FloatingContacts />
+            <Assistant />
+          </div>
+        </CartProvider>
+      </PreferencesProvider>
     </QueryClientProvider>
   );
 }
