@@ -112,17 +112,20 @@ export function HeroVideo() {
           transition={{ duration: 1, delay: 0.4 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-14"
         >
-          {tiles.map((t) => (
-            <Link
-              key={t.to}
-              to={t.to}
-              className="group glass-strong rounded-2xl p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
-            >
-              <t.icon className="h-6 w-6 text-[var(--gold)] mb-3" />
-              <div className="font-display text-lg group-hover:text-[var(--gold)] transition-colors">{usePrefs().t(t.key)}</div>
-              <div className="text-xs text-muted-foreground mt-1">{usePrefs().t(t.key + ".d")}</div>
-            </Link>
-          ))}
+          {tiles.map((tile) => {
+            const Icon = tile.icon;
+            return (
+              <Link
+                key={tile.to}
+                to={tile.to}
+                className="group glass-strong rounded-2xl p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
+              >
+                <Icon className="h-6 w-6 text-[var(--gold)] mb-3" />
+                <div className="font-display text-lg group-hover:text-[var(--gold)] transition-colors">{t(tile.key)}</div>
+                <div className="text-xs text-muted-foreground mt-1">{t(tile.key + ".d")}</div>
+              </Link>
+            );
+          })}
         </motion.div>
 
         {/* Decorative side dishes (desktop) */}
