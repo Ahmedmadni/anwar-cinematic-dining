@@ -30,9 +30,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: 'Reem Kufi', 'Cairo', sans-serif;
-  --font-poster: 'Rakkas', 'Reem Kufi', serif;
-  --font-body: 'Cairo', system-ui, sans-serif;
+  --font-display: 'Alexandria', 'DIN Next Arabic', 'Tajawal', 'Cairo', sans-serif;
+  --font-poster: 'Alexandria', 'DIN Next Arabic', 'Tajawal', 'Cairo', sans-serif;
+  --font-body: 'Cairo', 'Tajawal', 'Alexandria', system-ui, sans-serif;
 }
 
 :root {
