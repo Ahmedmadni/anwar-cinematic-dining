@@ -5,10 +5,17 @@ import { ShoppingBag, Menu as MenuIcon, X, Sun, Moon, Languages } from "lucide-r
 import { useState } from "react";
 import { usePrefs } from "@/lib/preferences";
 
-type NavLink = { to: "/" | "/menu" | "/branches" | "/reservation" | "/about"; key: string; exact?: boolean };
+type NavLink = {
+  to: "/" | "/menu" | "/branches" | "/offers" | "/gallery" | "/reviews" | "/reservation" | "/about";
+  key: string;
+  exact?: boolean;
+};
 const links: NavLink[] = [
   { to: "/", key: "nav.home", exact: true },
   { to: "/menu", key: "nav.menu" },
+  { to: "/offers", key: "nav.offers" },
+  { to: "/gallery", key: "nav.gallery" },
+  { to: "/reviews", key: "nav.reviews" },
   { to: "/branches", key: "nav.branches" },
   { to: "/reservation", key: "nav.reservation" },
   { to: "/about", key: "nav.about" },
