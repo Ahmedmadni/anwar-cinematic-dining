@@ -65,40 +65,36 @@ export function HeroVideo() {
       <Embers count={28} />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-8 pt-28 pb-16 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-24 md:pt-28 pb-14 md:pb-16 w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-strong text-[11px] tracking-[0.35em] text-[var(--gold)] mb-6">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
-            مغاغة · المنيا · مفتوح الآن
-          </div>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-strong text-[11px] tracking-[0.35em] text-[var(--gold)] mb-6">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full glass-strong text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.35em] text-[var(--gold)] mb-5 sm:mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
             {t("hero.badge")}
           </div>
-          <h1 className="font-poster text-5xl sm:text-7xl md:text-8xl leading-[1.05] mb-6">
+          <h1 className="font-poster text-[2.5rem] xs:text-5xl sm:text-7xl md:text-8xl leading-[1.05] mb-5 sm:mb-6">
             <span className="block shimmer-gold">{t("hero.title")}</span>
-            <span className="block text-foreground/95 text-3xl sm:text-4xl md:text-5xl mt-3 font-display">
+            <span className="block text-foreground/95 text-2xl sm:text-4xl md:text-5xl mt-2 sm:mt-3 font-display">
               {t("hero.subtitle")}
             </span>
           </h1>
-          <p className="text-foreground/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-9">
+          <p className="text-foreground/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-9 px-2">
             {t("hero.desc")}
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
             <Link
               to="/menu"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold shadow-gold hover:scale-[1.04] transition-transform"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold shadow-gold hover:scale-[1.04] transition-transform"
             >
               <BookOpen className="h-5 w-5" /> {t("hero.cta.menu")}
             </Link>
             <Link
               to="/reservation"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl glass-strong font-bold hover:border-[var(--gold)] transition"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-2xl glass-strong font-bold hover:border-[var(--gold)] transition"
             >
               <CalendarHeart className="h-5 w-5 text-[var(--gold)]" /> {t("hero.cta.book")}
             </Link>
@@ -110,7 +106,7 @@ export function HeroVideo() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-14"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10 sm:mt-14"
         >
           {tiles.map((tile) => {
             const Icon = tile.icon;
@@ -118,11 +114,11 @@ export function HeroVideo() {
               <Link
                 key={tile.to}
                 to={tile.to}
-                className="group glass-strong rounded-2xl p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
+                className="group glass-strong rounded-2xl p-4 sm:p-5 hover:border-[var(--gold)]/70 hover:-translate-y-1 transition-all"
               >
-                <Icon className="h-6 w-6 text-[var(--gold)] mb-3" />
-                <div className="font-display text-lg group-hover:text-[var(--gold)] transition-colors">{t(tile.key)}</div>
-                <div className="text-xs text-muted-foreground mt-1">{t(tile.key + ".d")}</div>
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--gold)] mb-2 sm:mb-3" />
+                <div className="font-display text-base sm:text-lg group-hover:text-[var(--gold)] transition-colors">{t(tile.key)}</div>
+                <div className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-snug">{t(tile.key + ".d")}</div>
               </Link>
             );
           })}

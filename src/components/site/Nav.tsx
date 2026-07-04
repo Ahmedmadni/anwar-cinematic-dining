@@ -34,14 +34,14 @@ export function Nav() {
       className="fixed top-0 inset-x-0 z-50"
     >
       <div className="mx-auto max-w-7xl px-4 md:px-6 mt-3">
-        <div className="glass-strong rounded-2xl px-4 md:px-6 py-3 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <span className="h-11 w-11 rounded-xl bg-gradient-gold flex items-center justify-center text-[oklch(0.1_0.012_40)] font-poster text-xl shadow-gold">
+        <div className="glass-strong rounded-2xl px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 group min-w-0 shrink">
+            <span className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-xl bg-gradient-gold flex items-center justify-center text-[oklch(0.1_0.012_40)] font-poster text-base sm:text-xl shadow-gold">
               أم
             </span>
-            <div className="leading-tight">
-              <div className="font-poster text-xl text-gold">أنوار المدينة</div>
-              <div className="text-[10px] tracking-[0.35em] text-muted-foreground">MAGHAGHA · 1998</div>
+            <div className="leading-tight min-w-0">
+              <div className="font-poster text-base sm:text-xl text-gold truncate">أنوار المدينة</div>
+              <div className="hidden sm:block text-[10px] tracking-[0.35em] text-muted-foreground">MAGHAGHA · 1998</div>
             </div>
           </Link>
 
@@ -60,10 +60,10 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={toggleLang}
-              className="h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition text-xs font-bold"
+              className="hidden sm:flex h-11 w-11 rounded-xl glass items-center justify-center hover:border-[var(--gold)]/60 transition text-xs font-bold"
               aria-label="Toggle language"
               title={lang === "ar" ? "English" : "العربية"}
             >
@@ -71,17 +71,17 @@ export function Nav() {
             </button>
             <button
               onClick={toggleTheme}
-              className="h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition"
+              className="hidden sm:flex h-11 w-11 rounded-xl glass items-center justify-center hover:border-[var(--gold)]/60 transition"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? <Sun className="h-4 w-4 text-[var(--gold)]" /> : <Moon className="h-4 w-4 text-[var(--gold)]" />}
             </button>
             <Link
               to="/cart"
-              className="relative h-11 w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition"
+              className="relative h-10 w-10 sm:h-11 sm:w-11 rounded-xl glass flex items-center justify-center hover:border-[var(--gold)]/60 transition"
               aria-label={t("nav.cart")}
             >
-              <ShoppingBag className="h-5 w-5 text-[var(--gold)]" />
+              <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--gold)]" />
               {count > 0 && (
                 <span className="absolute -top-1 -left-1 h-5 min-w-5 px-1 rounded-full bg-gradient-gold text-[oklch(0.1_0.012_40)] text-[11px] font-bold flex items-center justify-center shadow-gold">
                   {count}
@@ -96,10 +96,10 @@ export function Nav() {
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden h-11 w-11 rounded-xl glass flex items-center justify-center"
+              className="lg:hidden h-10 w-10 sm:h-11 sm:w-11 rounded-xl glass flex items-center justify-center"
               aria-label="القائمة"
             >
-              {open ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+              {open ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <MenuIcon className="h-4 w-4 sm:h-5 sm:w-5" />}
             </button>
           </div>
         </div>
@@ -122,6 +122,18 @@ export function Nav() {
                 {t(l.key)}
               </Link>
             ))}
+            <div className="grid grid-cols-3 gap-2 mt-2 pt-3 border-t border-[var(--gold)]/15 sm:hidden">
+              <button onClick={toggleLang} className="glass rounded-xl py-2.5 text-xs font-bold flex items-center justify-center gap-1.5">
+                <Languages className="h-4 w-4 text-[var(--gold)]" /> {lang === "ar" ? "EN" : "ع"}
+              </button>
+              <button onClick={toggleTheme} className="glass rounded-xl py-2.5 text-xs font-bold flex items-center justify-center gap-1.5">
+                {theme === "dark" ? <Sun className="h-4 w-4 text-[var(--gold)]" /> : <Moon className="h-4 w-4 text-[var(--gold)]" />}
+                {theme === "dark" ? "فاتح" : "داكن"}
+              </button>
+              <Link to="/reservation" onClick={() => setOpen(false)} className="bg-gradient-gold text-[oklch(0.1_0.012_40)] rounded-xl py-2.5 text-xs font-bold flex items-center justify-center">
+                {t("nav.order")}
+              </Link>
+            </div>
           </motion.div>
         )}
       </div>
