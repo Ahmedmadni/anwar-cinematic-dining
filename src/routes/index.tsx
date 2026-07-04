@@ -25,20 +25,20 @@ function Home() {
       <HeroVideo />
 
       {/* Categories teaser */}
-      <section className="relative py-24 px-5 md:px-8">
+      <section className="relative py-16 sm:py-24 px-4 sm:px-5 md:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex items-end justify-between mb-8 sm:mb-10 gap-3">
             <div>
-              <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">المنيو</div>
-              <h2 className="font-poster text-4xl md:text-5xl">معرض الذوق المصري</h2>
+              <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">المنيو</div>
+              <h2 className="font-poster text-2xl sm:text-4xl md:text-5xl">معرض الذوق المصري</h2>
             </div>
             <Link to="/menu" className="hidden md:inline-flex items-center gap-2 text-sm text-[var(--gold)] hover:gap-3 transition-all">
               كل الأصناف <ArrowLeft className="h-4 w-4" />
             </Link>
           </div>
-          <div className="gold-divider mb-10" />
+          <div className="gold-divider mb-8 sm:mb-10" />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
             {CATEGORIES.map((c, i) => (
               <motion.div
                 key={c.id}
@@ -56,9 +56,9 @@ function Home() {
                     <img src={c.dishes[0].img} alt={c.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
                   </div>
-                  <div className="absolute bottom-0 inset-x-0 p-5">
-                    <div className="font-display text-xl group-hover:text-[var(--gold)] transition-colors">{c.label}</div>
-                    <div className="text-xs text-foreground/70 mt-1">{c.tagline}</div>
+                  <div className="absolute bottom-0 inset-x-0 p-3 sm:p-5">
+                    <div className="font-display text-sm sm:text-xl group-hover:text-[var(--gold)] transition-colors">{c.label}</div>
+                    <div className="text-[10px] sm:text-xs text-foreground/70 mt-1 line-clamp-2">{c.tagline}</div>
                   </div>
                 </Link>
               </motion.div>
@@ -68,8 +68,8 @@ function Home() {
       </section>
 
       {/* Trust strip */}
-      <section className="relative py-20 px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 text-center">
           {[
             { k: "+25", v: "سنة خبرة" },
             { k: "5", v: "فروع نشطة" },
@@ -77,23 +77,23 @@ function Home() {
             { k: "30د", v: "متوسط التوصيل" },
           ].map((s) => (
             <div key={s.v}>
-              <div className="font-poster text-5xl text-gold">{s.k}</div>
-              <div className="text-xs tracking-[0.3em] text-muted-foreground mt-2">{s.v}</div>
+              <div className="font-poster text-3xl sm:text-5xl text-gold">{s.k}</div>
+              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground mt-2">{s.v}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Testimonial */}
-      <section className="relative py-24 px-5 md:px-8">
+      <section className="relative py-16 sm:py-24 px-4 sm:px-5 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="flex justify-center gap-1 mb-6 text-[var(--gold)]">
-            {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-5 w-5 fill-current" />)}
+          <div className="flex justify-center gap-1 mb-5 sm:mb-6 text-[var(--gold)]">
+            {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 fill-current" />)}
           </div>
-          <p className="font-display text-2xl md:text-3xl leading-relaxed">
+          <p className="font-display text-lg sm:text-2xl md:text-3xl leading-relaxed">
             «أحسن طعم مشاوي ذقته في الصعيد — الجو فخم والخدمة راقية والطعم زي بيت ستي بالظبط.»
           </p>
-          <div className="mt-6 text-sm text-muted-foreground tracking-wider">— أحمد عبد الرحمن · زائر منتظم</div>
+          <div className="mt-5 sm:mt-6 text-xs sm:text-sm text-muted-foreground tracking-wider">— أحمد عبد الرحمن · زائر منتظم</div>
         </div>
       </section>
     </main>

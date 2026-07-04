@@ -22,23 +22,23 @@ function MenuPage() {
   const { add, count } = useCart();
 
   return (
-    <main className="pt-28 pb-24 px-5 md:px-8">
+    <main className="pt-24 sm:pt-28 pb-20 sm:pb-24 px-4 sm:px-5 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">القائمة الكاملة</div>
-          <h1 className="font-poster text-5xl md:text-6xl mb-3">منيو أنوار المدينة</h1>
-          <div className="gold-divider w-40 mx-auto mt-5" />
+        <div className="text-center mb-8 sm:mb-10">
+          <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">القائمة الكاملة</div>
+          <h1 className="font-poster text-3xl sm:text-5xl md:text-6xl mb-3">منيو أنوار المدينة</h1>
+          <div className="gold-divider w-32 sm:w-40 mx-auto mt-4 sm:mt-5" />
         </div>
 
         {/* Sticky category tabs */}
-        <div className="sticky top-24 z-30 -mx-5 px-5 md:mx-0 md:px-0 mb-10">
-          <div className="glass-strong rounded-2xl p-2 flex gap-2 overflow-x-auto scroll-x-snap">
+        <div className="sticky top-20 sm:top-24 z-30 -mx-4 px-4 sm:-mx-5 sm:px-5 md:mx-0 md:px-0 mb-8 sm:mb-10">
+          <div className="glass-strong rounded-2xl p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 overflow-x-auto scroll-x-snap">
             {CATEGORIES.map((c) => (
               <a
                 key={c.id}
                 href={`#${c.id}`}
                 onClick={() => setActive(c.id)}
-                className={`snap-item shrink-0 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                className={`snap-item shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                   active === c.id
                     ? "bg-gradient-gold text-[oklch(0.1_0.012_40)] shadow-gold"
                     : "text-foreground/80 hover:text-[var(--gold)]"
@@ -49,29 +49,29 @@ function MenuPage() {
             ))}
             <Link
               to="/cart"
-              className="snap-item shrink-0 mr-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass text-sm hover:border-[var(--gold)] transition"
+              className="snap-item shrink-0 mr-auto inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
             >
-              <ShoppingBag className="h-4 w-4 text-[var(--gold)]" /> السلة ({count})
+              <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--gold)]" /> ({count})
             </Link>
           </div>
         </div>
 
         {/* Sections per category */}
-        <div className="space-y-24">
+        <div className="space-y-16 sm:space-y-24">
           {CATEGORIES.map((c) => (
-            <section key={c.id} id={c.id} className="scroll-mt-44">
-              <div className="flex items-end justify-between mb-8 border-b border-border pb-5">
+            <section key={c.id} id={c.id} className="scroll-mt-40 sm:scroll-mt-44">
+              <div className="flex items-end justify-between mb-6 sm:mb-8 border-b border-border pb-4 sm:pb-5 gap-3">
                 <div>
-                  <div className="text-xs tracking-[0.35em] text-[var(--gold)] mb-2">قسم</div>
-                  <h2 className="font-poster text-3xl md:text-5xl">{c.label}</h2>
-                  <p className="text-sm text-muted-foreground mt-2">{c.tagline}</p>
+                  <div className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] text-[var(--gold)] mb-1.5 sm:mb-2">قسم</div>
+                  <h2 className="font-poster text-2xl sm:text-3xl md:text-5xl">{c.label}</h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 sm:mt-2">{c.tagline}</p>
                 </div>
                 <div className="hidden md:block text-xs tracking-[0.3em] text-muted-foreground">
                   {c.dishes.length} أصناف
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
                 {c.dishes.map((d, i) => (
                   <motion.article
                     key={d.id}
@@ -88,12 +88,12 @@ function MenuPage() {
                         <span className="absolute top-3 right-3 px-3 py-1 rounded-full glass-strong text-[10px] tracking-widest text-[var(--gold)]">{d.tag}</span>
                       )}
                     </div>
-                    <div className="p-5">
-                      <h3 className="font-display text-xl group-hover:text-[var(--gold)] transition-colors">{d.name}</h3>
+                    <div className="p-4 sm:p-5">
+                      <h3 className="font-display text-lg sm:text-xl group-hover:text-[var(--gold)] transition-colors">{d.name}</h3>
                       <p className="text-xs text-muted-foreground leading-relaxed mt-2 min-h-[36px]">{d.desc}</p>
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                      <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-border">
                         <div>
-                          <span className="text-2xl font-bold text-gold">{d.price}</span>
+                          <span className="text-xl sm:text-2xl font-bold text-gold">{d.price}</span>
                           <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
                         </div>
                         <button

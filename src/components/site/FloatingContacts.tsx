@@ -6,7 +6,7 @@ const buttons = [
 
 export function FloatingContacts() {
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-3">
+    <div className="fixed bottom-24 sm:bottom-28 right-4 sm:right-6 z-40 flex flex-col gap-2.5 sm:gap-3">
       {buttons.map((b) => (
         <a
           key={b.label}
@@ -14,7 +14,7 @@ export function FloatingContacts() {
           target="_blank"
           rel="noreferrer"
           aria-label={b.label}
-          className={`group relative h-14 w-14 rounded-full ${b.color} text-white shadow-cinematic flex items-center justify-center text-xl hover:scale-110 transition-transform`}
+          className={`group relative h-12 w-12 sm:h-14 sm:w-14 rounded-full ${b.color} text-white shadow-cinematic flex items-center justify-center text-lg sm:text-xl hover:scale-110 transition-transform`}
         >
           <span>{b.icon}</span>
           <span className="absolute inset-0 rounded-full bg-current opacity-30 animate-ping" />
