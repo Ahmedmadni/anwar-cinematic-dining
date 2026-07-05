@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -18,8 +19,59 @@ export const Route = createFileRoute("/menu")({
 });
 
 function MenuPage() {
+  const isMobile = useIsMobile();
   const [active, setActive] = useState(CATEGORIES[0].id);
+  const [query, setQuery] = useState("");
+  const [priceBand, setPriceBand] = useState<"all" | "lt100" | "mid" | "gt250">("all");
+  const [sort, setSort] = useState<"default" | "asc" | "desc">("default");
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(CATEGORIES.map((c, i) => [c.id, i === 0])),
+  );
   const { add, count } = useCart();
+
+  const bands = [
+    { id: "all", label: "الكل" },
+    { id: "lt100", label: "أقل من ١٠٠" },
+    { id: "mid", label: "١٠٠ - ٢٥٠" },
+    { id: "gt250", label: "أعلى من ٢٥٠" },
+  ] as const;
+
+  const matchPrice = (p: number) => {
+    if (priceBand === "lt100") return p < 100;
+    if (priceBand === "mid") return p >= 100 && p <= 250;
+    if (priceBand === "gt250") return p > 250;
+    return true;
+  };
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return CATEGORIES.map((c) => {
+      let dishes = c.dishes.filter(
+        (d) =>
+          matchPrice(d.price) &&
+          (q === "" || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q)),
+      );
+      if (sort === "asc") dishes = [...dishes].sort((a, b) => a.price - b.price);
+      if (sort === "desc") dishes = [...dishes].sort((a, b) => b.price - a.price);
+      return { ...c, dishes };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, priceBand, sort]);
+
+  const totalHits = filtered.reduce((n, c) => n + c.dishes.length, 0);
+  const filtersActive = query !== "" || priceBand !== "all" || sort !== "default";
+
+  const toggleOpen = (id: string) =>
+    setOpenIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  const expandAll = () =>
+    setOpenIds(Object.fromEntries(CATEGORIES.map((c) => [c.id, true])));
+  const collapseAll = () =>
+    setOpenIds(Object.fromEntries(CATEGORIES.map((c) => [c.id, false])));
+  const resetFilters = () => {
+    setQuery("");
+    setPriceBand("all");
+    setSort("default");
+  };
 
   return (
     <main className="pt-24 sm:pt-28 pb-20 sm:pb-24 px-4 sm:px-5 md:px-8">
@@ -30,14 +82,49 @@ function MenuPage() {
           <div className="gold-divider w-32 sm:w-40 mx-auto mt-4 sm:mt-5" />
         </div>
 
-        {/* Sticky category tabs */}
-        <div className="sticky top-20 sm:top-24 z-30 -mx-4 px-4 sm:-mx-5 sm:px-5 md:mx-0 md:px-0 mb-8 sm:mb-10">
+        {/* Sticky filters bar */}
+        <div className="sticky top-20 sm:top-24 z-30 -mx-4 px-4 sm:-mx-5 sm:px-5 md:mx-0 md:px-0 mb-6 sm:mb-10 space-y-2 sm:space-y-3">
+          <div className="glass-strong rounded-2xl p-2 flex items-center gap-2">
+            <div className="relative flex-1 min-w-0">
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--gold)]/70 pointer-events-none" />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="مسح البحث"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-7 grid place-items-center rounded-full hover:bg-[var(--gold)]/10 text-muted-foreground"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                inputMode="search"
+                placeholder="ابحث عن طبق..."
+                className="w-full bg-transparent outline-none border-0 h-11 pr-10 pl-9 text-sm placeholder:text-muted-foreground/70"
+              />
+            </div>
+            <Link
+              to="/cart"
+              aria-label="السلة"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3 h-11 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
+            >
+              <ShoppingBag className="h-4 w-4 text-[var(--gold)]" />
+              <span className="font-bold">{count}</span>
+            </Link>
+          </div>
+
           <div className="glass-strong rounded-2xl p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 overflow-x-auto scroll-x-snap">
             {CATEGORIES.map((c) => (
               <a
                 key={c.id}
                 href={`#${c.id}`}
-                onClick={() => setActive(c.id)}
+                onClick={() => {
+                  setActive(c.id);
+                  setOpenIds((prev) => ({ ...prev, [c.id]: true }));
+                }}
                 className={`snap-item shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                   active === c.id
                     ? "bg-gradient-gold text-[oklch(0.1_0.012_40)] shadow-gold"
@@ -47,68 +134,152 @@ function MenuPage() {
                 {c.label}
               </a>
             ))}
-            <Link
-              to="/cart"
-              className="snap-item shrink-0 mr-auto inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
-            >
-              <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--gold)]" /> ({count})
-            </Link>
           </div>
+
+          <div className="glass-strong rounded-2xl p-2 flex items-center gap-2 overflow-x-auto scroll-x-snap">
+            <SlidersHorizontal className="h-4 w-4 text-[var(--gold)]/80 shrink-0 mr-1" />
+            {bands.map((b) => (
+              <button
+                key={b.id}
+                type="button"
+                onClick={() => setPriceBand(b.id)}
+                className={`snap-item shrink-0 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition ${
+                  priceBand === b.id
+                    ? "bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/40"
+                    : "border border-border text-foreground/70 hover:text-[var(--gold)]"
+                }`}
+              >
+                {b.label}
+              </button>
+            ))}
+            <div className="mx-1 h-5 w-px bg-border shrink-0" />
+            <button
+              type="button"
+              onClick={() =>
+                setSort(sort === "default" ? "asc" : sort === "asc" ? "desc" : "default")
+              }
+              className="snap-item shrink-0 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-border text-foreground/80 hover:text-[var(--gold)] transition"
+            >
+              السعر {sort === "asc" ? "↑" : sort === "desc" ? "↓" : "—"}
+            </button>
+            <button
+              type="button"
+              onClick={() => (Object.values(openIds).every(Boolean) ? collapseAll() : expandAll())}
+              className="snap-item shrink-0 mr-auto px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-border text-foreground/80 hover:text-[var(--gold)] transition"
+            >
+              {Object.values(openIds).every(Boolean) ? "طيّ الكل" : "فتح الكل"}
+            </button>
+          </div>
+
+          {filtersActive && (
+            <div className="flex items-center justify-between text-[11px] sm:text-xs px-1">
+              <span className="text-muted-foreground">{totalHits} نتيجة</span>
+              <button type="button" onClick={resetFilters} className="text-[var(--gold)] hover:underline">
+                إعادة ضبط الفلاتر
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Sections per category */}
-        <div className="space-y-16 sm:space-y-24">
-          {CATEGORIES.map((c) => (
-            <section key={c.id} id={c.id} className="scroll-mt-40 sm:scroll-mt-44">
-              <div className="flex items-end justify-between mb-6 sm:mb-8 border-b border-border pb-4 sm:pb-5 gap-3">
-                <div>
-                  <div className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] text-[var(--gold)] mb-1.5 sm:mb-2">قسم</div>
-                  <h2 className="font-poster text-2xl sm:text-3xl md:text-5xl">{c.label}</h2>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 sm:mt-2">{c.tagline}</p>
-                </div>
-                <div className="hidden md:block text-xs tracking-[0.3em] text-muted-foreground">
-                  {c.dishes.length} أصناف
-                </div>
-              </div>
+        <div className="space-y-6 sm:space-y-16 md:space-y-24">
+          {filtered.map((c) => {
+            const isOpen = isMobile ? !!openIds[c.id] : true;
+            const empty = c.dishes.length === 0;
+            return (
+              <section key={c.id} id={c.id} className="scroll-mt-44 sm:scroll-mt-48">
+                <button
+                  type="button"
+                  onClick={() => isMobile && toggleOpen(c.id)}
+                  aria-expanded={isOpen}
+                  className="w-full flex items-center justify-between gap-3 mb-4 sm:mb-8 border-b border-border pb-3 sm:pb-5 text-right md:cursor-default"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] text-[var(--gold)] mb-1 sm:mb-2">قسم</div>
+                    <h2 className="font-poster text-2xl sm:text-3xl md:text-5xl truncate">{c.label}</h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2 line-clamp-1">{c.tagline}</p>
+                  </div>
+                  <div className="shrink-0 flex items-center gap-2">
+                    <span className="text-[10px] sm:text-xs tracking-[0.25em] text-muted-foreground">
+                      {c.dishes.length}
+                    </span>
+                    <span className="sm:hidden h-9 w-9 grid place-items-center rounded-full border border-border text-[var(--gold)]">
+                      <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                    </span>
+                  </div>
+                </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-                {c.dishes.map((d, i) => (
-                  <motion.article
-                    key={d.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: i * 0.06 }}
-                    className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/50 transition-all"
-                  >
-                    <div className="relative aspect-[5/4] overflow-hidden">
-                      <img src={d.img} alt={d.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
-                      {d.tag && (
-                        <span className="absolute top-3 right-3 px-3 py-1 rounded-full glass-strong text-[10px] tracking-widest text-[var(--gold)]">{d.tag}</span>
-                      )}
-                    </div>
-                    <div className="p-4 sm:p-5">
-                      <h3 className="font-display text-lg sm:text-xl group-hover:text-[var(--gold)] transition-colors">{d.name}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed mt-2 min-h-[36px]">{d.desc}</p>
-                      <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-border">
-                        <div>
-                          <span className="text-xl sm:text-2xl font-bold text-gold">{d.price}</span>
-                          <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      {empty ? (
+                        <div className="py-10 text-center text-sm text-muted-foreground">
+                          لا توجد أصناف مطابقة في هذا القسم.
                         </div>
-                        <button
-                          onClick={() => add(d.id)}
-                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] transition-transform"
-                        >
-                          <Plus className="h-4 w-4" /> أضف
-                        </button>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            </section>
-          ))}
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 pt-1 pb-2">
+                          {c.dishes.map((d, i) => (
+                            <motion.article
+                              key={d.id}
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true, margin: "-40px" }}
+                              transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.25) }}
+                              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/50 transition-all"
+                            >
+                              <div className="relative aspect-[16/10] sm:aspect-[5/4] overflow-hidden">
+                                <img src={d.img} alt={d.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
+                                {d.tag && (
+                                  <span className="absolute top-3 right-3 px-3 py-1 rounded-full glass-strong text-[10px] tracking-widest text-[var(--gold)]">{d.tag}</span>
+                                )}
+                              </div>
+                              <div className="p-4 sm:p-5">
+                                <h3 className="font-display text-lg sm:text-xl group-hover:text-[var(--gold)] transition-colors">{d.name}</h3>
+                                <p className="text-xs text-muted-foreground leading-relaxed mt-2 line-clamp-2 sm:line-clamp-none sm:min-h-[36px]">{d.desc}</p>
+                                <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-border">
+                                  <div>
+                                    <span className="text-xl sm:text-2xl font-bold text-gold">{d.price}</span>
+                                    <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
+                                  </div>
+                                  <button
+                                    onClick={() => add(d.id)}
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation"
+                                  >
+                                    <Plus className="h-4 w-4" /> أضف
+                                  </button>
+                                </div>
+                              </div>
+                            </motion.article>
+                          ))}
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </section>
+            );
+          })}
+
+          {totalHits === 0 && (
+            <div className="py-16 text-center">
+              <p className="text-sm text-muted-foreground mb-4">لا توجد نتائج مطابقة لبحثك.</p>
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold"
+              >
+                إعادة ضبط الفلاتر
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </main>
