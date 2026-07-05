@@ -2,13 +2,18 @@ import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Embers } from "./Embers";
-import hero from "@/assets/hero-grill.jpg";
+import heroLqip from "@/assets/hero-grill.jpg?w=48&format=webp&quality=40&blur=25";
+import hero from "@/assets/hero-grill.jpg?w=1600&format=webp&quality=70";
+import heroMobile from "@/assets/hero-grill.jpg?w=900&format=webp&quality=68";
 import heroVideo from "@/assets/hero-grill.mp4.asset.json";
-import dish1 from "@/assets/dish-mixed-grill.jpg";
-import dish2 from "@/assets/dish-tagine.jpg";
-import bg2 from "@/assets/bg-grill-2.jpg";
-import bg3 from "@/assets/bg-feast.jpg";
-import bg4 from "@/assets/bg-dessert.jpg";
+import dish1 from "@/assets/dish-mixed-grill.jpg?w=560&format=webp&quality=72";
+import dish2 from "@/assets/dish-tagine.jpg?w=440&format=webp&quality=72";
+import bg2 from "@/assets/bg-grill-2.jpg?w=1600&format=webp&quality=68";
+import bg3 from "@/assets/bg-feast.jpg?w=1600&format=webp&quality=68";
+import bg4 from "@/assets/bg-dessert.jpg?w=1600&format=webp&quality=68";
+import bg2m from "@/assets/bg-grill-2.jpg?w=900&format=webp&quality=66";
+import bg3m from "@/assets/bg-feast.jpg?w=900&format=webp&quality=66";
+import bg4m from "@/assets/bg-dessert.jpg?w=900&format=webp&quality=66";
 import { Flame, BookOpen, MapPin, CalendarHeart } from "lucide-react";
 import { usePrefs } from "@/lib/preferences";
 
@@ -20,24 +25,61 @@ const tiles = [
 ] as const;
 
 const VIDEO_SRC = heroVideo.url;
-const BACKDROPS = [hero, bg2, bg3, bg4];
+const BACKDROPS_DESKTOP = [hero, bg2, bg3, bg4];
+const BACKDROPS_MOBILE = [heroMobile, bg2m, bg3m, bg4m];
 
 export function HeroVideo() {
   const { t } = usePrefs();
   const [idx, setIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [heroReady, setHeroReady] = useState(false);
+  const [videoAllowed, setVideoAllowed] = useState(false);
+
   useEffect(() => {
-    const i = setInterval(() => setIdx((v) => (v + 1) % BACKDROPS.length), 6500);
-    return () => clearInterval(i);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const rm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const saveData = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const isSlow = !!saveData?.saveData || (saveData?.effectiveType ?? "").includes("2g");
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+
+    // Video only on desktop, when user hasn't opted out of motion, and network is OK.
+    setVideoAllowed(!mq.matches && !rm.matches && !isSlow);
+    return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  const backdrops = isMobile ? BACKDROPS_MOBILE : BACKDROPS_DESKTOP;
+
+  useEffect(() => {
+    if (!heroReady) return;
+    const i = setInterval(
+      () => setIdx((v) => (v + 1) % backdrops.length),
+      isMobile ? 8500 : 6500,
+    );
+    return () => clearInterval(i);
+  }, [heroReady, isMobile, backdrops.length]);
 
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center">
-      {/* Layer 1 — Rotating ken-burns photo stack */}
+      {/* Layer 0 — Instant LQIP (tiny blurred preview, ships in initial HTML) */}
+      <img
+        src={heroLqip}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover scale-110 blur-xl"
+      />
+
+      {/* Layer 1 — Rotating ken-burns photo stack (progressive enhancement) */}
       <AnimatePresence>
         <motion.img
           key={idx}
-          src={BACKDROPS[idx]}
+          src={backdrops[idx]}
           alt="أنوار المدينة"
+          loading={idx === 0 ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={idx === 0 ? "high" : "low"}
+          onLoad={() => setHeroReady(true)}
           initial={{ opacity: 0, scale: 1.08 }}
           animate={{ opacity: 1, scale: 1.18 }}
           exit={{ opacity: 0 }}
@@ -46,18 +88,21 @@ export function HeroVideo() {
         />
       </AnimatePresence>
 
-      {/* Layer 2 — Cinematic video (loads over photo if available) */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={hero}
-      >
-        <source src={VIDEO_SRC} type="video/mp4" />
-      </video>
+      {/* Layer 2 — Cinematic video: desktop + full motion + non-slow network only.
+          Skipping on mobile saves ~19MB of transfer. */}
+      {videoAllowed && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={hero}
+        >
+          <source src={VIDEO_SRC} type="video/mp4" />
+        </video>
+      )}
 
       {/* Vignette + grain */}
       <div className="absolute inset-0 hero-vignette" />
