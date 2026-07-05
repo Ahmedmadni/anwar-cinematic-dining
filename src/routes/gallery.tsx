@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { usePrefs } from "@/lib/preferences";
-import mixed from "@/assets/dish-mixed-grill.jpg";
-import tagine from "@/assets/dish-tagine.jpg";
-import koshary from "@/assets/dish-koshary.jpg";
-import omali from "@/assets/dish-omali.jpg";
-import bgGrill from "@/assets/bg-grill-2.jpg";
-import bgFeast from "@/assets/bg-feast.jpg";
-import bgDessert from "@/assets/bg-dessert.jpg";
-import hero from "@/assets/hero-grill.jpg";
+import mixed from "@/assets/dish-mixed-grill.jpg?w=900&quality=70&format=webp";
+import tagine from "@/assets/dish-tagine.jpg?w=900&quality=70&format=webp";
+import koshary from "@/assets/dish-koshary.jpg?w=900&quality=70&format=webp";
+import omali from "@/assets/dish-omali.jpg?w=900&quality=70&format=webp";
+import bgGrill from "@/assets/bg-grill-2.jpg?w=1400&quality=70&format=webp";
+import bgFeast from "@/assets/bg-feast.jpg?w=1400&quality=70&format=webp";
+import bgDessert from "@/assets/bg-dessert.jpg?w=1400&quality=70&format=webp";
+import hero from "@/assets/hero-grill.jpg?w=1400&quality=70&format=webp";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
