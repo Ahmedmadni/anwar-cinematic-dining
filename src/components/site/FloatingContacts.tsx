@@ -1,9 +1,9 @@
 import { MessageCircle, Phone, Facebook } from "lucide-react";
 
 const buttons = [
-  { href: "https://wa.me/201120016502", label: "واتساب", color: "bg-emerald-500", Icon: MessageCircle },
-  { href: "tel:01120016502", label: "اتصل", color: "bg-gradient-gold text-[oklch(0.1_0.012_40)]", Icon: Phone },
-  { href: "https://www.facebook.com/elmadni1998", label: "فيسبوك", color: "bg-blue-500", Icon: Facebook },
+  { href: "https://wa.me/201120016502", label: "واتساب", color: "bg-emerald-500", Icon: MessageCircle, primary: true },
+  { href: "tel:01120016502", label: "اتصل", color: "bg-gradient-gold text-[oklch(0.1_0.012_40)]", Icon: Phone, primary: false },
+  { href: "https://www.facebook.com/elmadni1998", label: "فيسبوك", color: "bg-blue-500", Icon: Facebook, primary: false },
 ];
 
 export function FloatingContacts() {
@@ -18,7 +18,7 @@ export function FloatingContacts() {
             target="_blank"
             rel="noreferrer"
             aria-label={b.label}
-            className={`group relative h-11 w-11 sm:h-14 sm:w-14 rounded-full ${b.color} text-white shadow-cinematic flex items-center justify-center hover:scale-110 transition-transform`}
+            className={`group relative h-11 w-11 sm:h-14 sm:w-14 rounded-full ${b.color} text-white shadow-cinematic ${b.primary ? "flex" : "hidden sm:flex"} items-center justify-center hover:scale-110 transition-transform`}
           >
             <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
           </a>
