@@ -1,7 +1,7 @@
-import koshary from "@/assets/dish-koshary.jpg";
-import tagine from "@/assets/dish-tagine.jpg";
-import omali from "@/assets/dish-omali.jpg";
-import mixed from "@/assets/dish-mixed-grill.jpg";
+import koshary from "@/assets/dish-koshary.jpg?w=700&quality=72&format=webp";
+import tagine from "@/assets/dish-tagine.jpg?w=700&quality=72&format=webp";
+import omali from "@/assets/dish-omali.jpg?w=700&quality=72&format=webp";
+import mixed from "@/assets/dish-mixed-grill.jpg?w=700&quality=72&format=webp";
 
 export type Dish = {
   id: string;
