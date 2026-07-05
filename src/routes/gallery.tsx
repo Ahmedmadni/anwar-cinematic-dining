@@ -61,6 +61,8 @@ function GalleryPage() {
               <img
                 src={s.src}
                 alt={s.cap[lang]}
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.05_0.01_40/0.85)] via-transparent to-transparent" />
