@@ -8,7 +8,7 @@ const buttons = [
 
 export function FloatingContacts() {
   return (
-    <div className="fixed bottom-4 sm:bottom-6 ltr:right-4 sm:ltr:right-6 rtl:right-4 sm:rtl:right-6 z-40 flex flex-col gap-2 sm:gap-3">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 flex flex-col gap-2 sm:gap-3">
       {buttons.map((b) => {
         const Icon = b.Icon;
         return (
