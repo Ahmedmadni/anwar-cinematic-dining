@@ -15,6 +15,7 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingContacts } from "@/components/site/FloatingContacts";
 import { PreferencesProvider } from "@/lib/preferences";
 import { Assistant } from "@/components/site/Assistant";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -136,6 +137,7 @@ function RootComponent() {
             <Footer />
             <FloatingContacts />
             <Assistant />
+            <Toaster />
           </div>
         </CartProvider>
       </PreferencesProvider>
