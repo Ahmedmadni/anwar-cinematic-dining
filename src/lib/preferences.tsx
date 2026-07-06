@@ -55,17 +55,28 @@ const dict: Record<string, { ar: string; en: string }> = {
 const PrefCtx = createContext<Ctx | null>(null);
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("ar");
-  const [theme, setThemeState] = useState<Theme>("dark");
-
-  useEffect(() => {
+  const readLang = (): Lang => {
+    if (typeof window === "undefined") return "ar";
     try {
-      const l = localStorage.getItem("aam.lang") as Lang | null;
-      const t = localStorage.getItem("aam.theme") as Theme | null;
-      if (l === "ar" || l === "en") setLangState(l);
-      if (t === "dark" || t === "light") setThemeState(t);
+      const l = localStorage.getItem("aam.lang");
+      if (l === "ar" || l === "en") return l;
+      const d = document.documentElement.lang;
+      if (d === "ar" || d === "en") return d;
     } catch {}
-  }, []);
+    return "ar";
+  };
+  const readTheme = (): Theme => {
+    if (typeof window === "undefined") return "dark";
+    try {
+      const t = localStorage.getItem("aam.theme");
+      if (t === "dark" || t === "light") return t;
+      const d = document.documentElement.dataset.theme;
+      if (d === "dark" || d === "light") return d as Theme;
+    } catch {}
+    return "dark";
+  };
+  const [lang, setLangState] = useState<Lang>(readLang);
+  const [theme, setThemeState] = useState<Theme>(readTheme);
 
   useEffect(() => {
     const html = document.documentElement;
