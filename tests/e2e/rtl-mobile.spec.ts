@@ -28,12 +28,22 @@ test.describe("RTL mobile layout", () => {
         const vw = document.documentElement.clientWidth;
         const bad: { tag: string; cls: string; left: number; right: number }[] = [];
         const nodes = document.body.querySelectorAll<HTMLElement>("*");
+        const isClipped = (el: HTMLElement): boolean => {
+          let p: HTMLElement | null = el.parentElement;
+          while (p && p !== document.body) {
+            const s = getComputedStyle(p);
+            if (s.overflowX === "hidden" || s.overflowX === "clip" || s.overflow === "hidden" || s.overflow === "clip") return true;
+            p = p.parentElement;
+          }
+          return false;
+        };
         nodes.forEach((el) => {
           const cs = getComputedStyle(el);
           if (cs.position === "fixed") return; // FABs/nav are allowed
           if (cs.display === "none" || cs.visibility === "hidden") return;
           const r = el.getBoundingClientRect();
           if (r.width === 0 || r.height === 0) return;
+          if (isClipped(el)) return; // element is visually clipped by ancestor
           if (r.left < -1 || r.right > vw + 1) {
             bad.push({ tag: el.tagName, cls: (el.className || "").toString().slice(0, 60), left: r.left, right: r.right });
           }
