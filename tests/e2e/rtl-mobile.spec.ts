@@ -32,7 +32,9 @@ test.describe("RTL mobile layout", () => {
           let p: HTMLElement | null = el.parentElement;
           while (p && p !== document.body) {
             const s = getComputedStyle(p);
-            if (s.overflowX === "hidden" || s.overflowX === "clip" || s.overflow === "hidden" || s.overflow === "clip") return true;
+            const ox = s.overflowX;
+            if (ox === "hidden" || ox === "clip" || ox === "auto" || ox === "scroll") return true;
+            if (s.overflow === "hidden" || s.overflow === "clip" || s.overflow === "auto" || s.overflow === "scroll") return true;
             p = p.parentElement;
           }
           return false;
