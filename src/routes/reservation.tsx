@@ -73,17 +73,25 @@ function ReservationPage() {
       <style>{`
         .form-input {
           width: 100%;
-          background: oklch(0.08 0.01 40 / 0.6);
-          border: 1px solid oklch(0.84 0.16 84 / 0.18);
+          background: color-mix(in oklab, var(--background) 60%, transparent);
+          border: 1px solid var(--border);
           border-radius: 0.75rem;
           padding: 0.85rem 1rem;
           color: var(--foreground);
           font-family: var(--font-body);
+          text-align: start;
           outline: none;
-          transition: border-color .2s;
+          transition: border-color .2s, box-shadow .2s;
         }
-        .form-input:focus { border-color: oklch(0.84 0.16 84 / 0.6); }
-        .form-input::placeholder { color: oklch(0.55 0.02 60); }
+        .form-input:focus { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 25%, transparent); }
+        .form-input::placeholder { color: var(--muted-foreground); opacity: 0.8; }
+        /* Force LTR for numeric/phone inputs so digits and separators render correctly, but keep visual alignment at line-start */
+        input[type="tel"].form-input,
+        input[type="number"].form-input,
+        input[type="datetime-local"].form-input { direction: ltr; text-align: start; }
+        [dir="rtl"] input[type="tel"].form-input,
+        [dir="rtl"] input[type="number"].form-input,
+        [dir="rtl"] input[type="datetime-local"].form-input { text-align: right; }
       `}</style>
     </main>
   );
