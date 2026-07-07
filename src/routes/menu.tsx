@@ -28,7 +28,7 @@ function MenuPage() {
     Object.fromEntries(CATEGORIES.map((c, i) => [c.id, i === 0])),
   );
   const [selected, setSelected] = useState<Dish | null>(null);
-  const { add, count, remove, items } = useCart();
+  const { add, count, setQty, items } = useCart();
 
   useEffect(() => {
     if (!selected) return;
@@ -354,7 +354,7 @@ function MenuPage() {
                     <div className="inline-flex items-center gap-2 rounded-2xl glass-strong p-1.5">
                       <button
                         type="button"
-                        onClick={() => remove(selected.id)}
+                        onClick={() => setQty(selected.id, qtyOf(selected.id) - 1)}
                         aria-label="إنقاص"
                         className="h-10 w-10 grid place-items-center rounded-xl hover:bg-[var(--gold)]/10 text-[var(--gold)] touch-manipulation"
                       >
