@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { CATEGORIES } from "@/lib/menu-data";
+import { CATEGORIES, type Dish } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createFileRoute("/menu")({
@@ -27,7 +27,22 @@ function MenuPage() {
   const [openIds, setOpenIds] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(CATEGORIES.map((c, i) => [c.id, i === 0])),
   );
-  const { add, count } = useCart();
+  const [selected, setSelected] = useState<Dish | null>(null);
+  const { add, count, setQty, items } = useCart();
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [selected]);
+
+  const qtyOf = (id: string) => items.find((i) => i.id === id)?.qty ?? 0;
 
   const bands = [
     { id: "all", label: "الكل" },
@@ -228,19 +243,21 @@ function MenuPage() {
                           {c.dishes.map((d, i) => (
                             <motion.article
                               key={d.id}
+                              layoutId={`dish-${d.id}`}
                               initial={{ opacity: 0, y: 20 }}
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true, margin: "-40px" }}
                               transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.25) }}
-                              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/50 transition-all"
+                              onClick={() => setSelected(d)}
+                              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/50 transition-all cursor-pointer text-right"
                             >
-                              <div className="relative aspect-[16/10] sm:aspect-[5/4] overflow-hidden">
+                              <motion.div layoutId={`dish-img-${d.id}`} className="relative aspect-[16/10] sm:aspect-[5/4] overflow-hidden">
                                 <img src={d.img} alt={d.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
                                 {d.tag && (
                                   <span className="absolute top-3 right-3 px-3 py-1 rounded-full glass-strong text-[10px] tracking-widest text-[var(--gold)]">{d.tag}</span>
                                 )}
-                              </div>
+                              </motion.div>
                               <div className="p-4 sm:p-5">
                                 <h3 className="font-display text-lg sm:text-xl group-hover:text-[var(--gold)] transition-colors">{d.name}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed mt-2 line-clamp-2 sm:line-clamp-none sm:min-h-[36px]">{d.desc}</p>
@@ -250,7 +267,7 @@ function MenuPage() {
                                     <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
                                   </div>
                                   <button
-                                    onClick={() => add(d.id)}
+                                    onClick={(e) => { e.stopPropagation(); add(d.id); }}
                                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation"
                                   >
                                     <Plus className="h-4 w-4" /> أضف
@@ -282,6 +299,92 @@ function MenuPage() {
           )}
         </div>
       </div>
+
+      {/* Dish detail lightbox with shared layout animation */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              className="absolute inset-0 bg-[oklch(0.05_0.008_40)/0.75] backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <motion.article
+              layoutId={`dish-${selected.id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-3xl bg-card border border-[var(--gold)]/30 shadow-2xl grid grid-rows-[auto_1fr]"
+            >
+              <motion.div layoutId={`dish-img-${selected.id}`} className="relative aspect-[16/10] overflow-hidden">
+                <img src={selected.img} alt={selected.name} className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
+                {selected.tag && (
+                  <span className="absolute top-4 right-4 px-3 py-1 rounded-full glass-strong text-[10px] tracking-widest text-[var(--gold)]">{selected.tag}</span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  aria-label="إغلاق"
+                  className="absolute top-4 left-4 h-10 w-10 grid place-items-center rounded-full glass-strong text-foreground hover:text-[var(--gold)] transition"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </motion.div>
+              <motion.div
+                className="p-5 sm:p-7 overflow-y-auto"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0, transition: { delay: 0.15 } }}
+                exit={{ opacity: 0, y: 12 }}
+              >
+                <div className="text-[10px] tracking-[0.3em] text-[var(--gold)] mb-2">طبق مميّز</div>
+                <h3 className="font-poster text-2xl sm:text-3xl mb-3">{selected.name}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{selected.desc}</p>
+                <div className="mt-5 pt-5 border-t border-border flex items-center justify-between gap-3 flex-wrap">
+                  <div>
+                    <span className="text-3xl font-bold text-gold">{selected.price}</span>
+                    <span className="text-xs text-muted-foreground mr-1">ج.م</span>
+                  </div>
+                  {qtyOf(selected.id) > 0 ? (
+                    <div className="inline-flex items-center gap-2 rounded-2xl glass-strong p-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setQty(selected.id, qtyOf(selected.id) - 1)}
+                        aria-label="إنقاص"
+                        className="h-10 w-10 grid place-items-center rounded-xl hover:bg-[var(--gold)]/10 text-[var(--gold)] touch-manipulation"
+                      >
+                        <Minus className="h-4 w-4" />
+                      </button>
+                      <span className="min-w-8 text-center font-bold tabular-nums">{qtyOf(selected.id)}</span>
+                      <button
+                        type="button"
+                        onClick={() => add(selected.id)}
+                        aria-label="زيادة"
+                        className="h-10 w-10 grid place-items-center rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] touch-manipulation"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => add(selected.id)}
+                      className="inline-flex items-center gap-2 px-5 h-11 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-sm font-bold hover:scale-[1.03] active:scale-95 transition-transform touch-manipulation"
+                    >
+                      <Plus className="h-4 w-4" /> أضف للسلة
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            </motion.article>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
