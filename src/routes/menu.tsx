@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, type Dish } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Route = createFileRoute("/menu")({
@@ -29,6 +29,19 @@ function MenuPage() {
   );
   const [selected, setSelected] = useState<Dish | null>(null);
   const { add, count, setQty, items } = useCart();
+  const [catOpen, setCatOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const catRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (catRef.current && !catRef.current.contains(e.target as Node)) setCatOpen(false);
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) setFilterOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
 
   useEffect(() => {
     if (!selected) return;
@@ -50,6 +63,10 @@ function MenuPage() {
     { id: "mid", label: "١٠٠ - ٢٥٠" },
     { id: "gt250", label: "أعلى من ٢٥٠" },
   ] as const;
+
+  const activeCat = CATEGORIES.find((c) => c.id === active) ?? CATEGORIES[0];
+  const activeBand = bands.find((b) => b.id === priceBand)!;
+  const sortLabel = sort === "asc" ? "السعر ↑" : sort === "desc" ? "السعر ↓" : "الافتراضي";
 
   const matchPrice = (p: number) => {
     if (priceBand === "lt100") return p < 100;
@@ -97,10 +114,11 @@ function MenuPage() {
           <div className="gold-divider w-32 sm:w-40 mx-auto mt-4 sm:mt-5" />
         </div>
 
-        {/* Sticky filters bar */}
-        <div className="sticky top-20 sm:top-24 z-30 -mx-4 px-4 sm:-mx-5 sm:px-5 md:mx-0 md:px-0 mb-6 sm:mb-10 space-y-2 sm:space-y-3">
-          <div className="glass-strong rounded-2xl p-2 flex items-center gap-2">
-            <div className="relative flex-1 min-w-0">
+        {/* Sticky compact filter bar */}
+        <div className="sticky top-20 sm:top-24 z-30 -mx-4 px-4 sm:-mx-5 sm:px-5 md:mx-0 md:px-0 mb-6 sm:mb-10">
+          <div className="glass-strong rounded-2xl p-2 flex items-center gap-2 flex-wrap">
+            {/* Search */}
+            <div className="relative flex-1 min-w-[140px] order-1">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--gold)]/70 pointer-events-none" />
               {query && (
                 <button
@@ -118,77 +136,153 @@ function MenuPage() {
                 onChange={(e) => setQuery(e.target.value)}
                 inputMode="search"
                 placeholder="ابحث عن طبق..."
-                className="w-full bg-transparent outline-none border-0 h-11 pr-10 pl-9 text-sm placeholder:text-muted-foreground/70"
+                className="w-full bg-transparent outline-none border-0 h-10 pr-10 pl-9 text-sm placeholder:text-muted-foreground/70"
               />
             </div>
+
+            {/* Category dropdown */}
+            <div ref={catRef} className="relative order-2">
+              <button
+                type="button"
+                onClick={() => { setCatOpen((v) => !v); setFilterOpen(false); }}
+                className="inline-flex items-center gap-1.5 h-10 px-3 rounded-xl border border-border hover:border-[var(--gold)]/60 text-xs sm:text-sm font-medium transition"
+              >
+                <span className="text-[var(--gold)]/80">القسم:</span>
+                <span className="truncate max-w-[110px]">{activeCat.label}</span>
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${catOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {catOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-56 max-h-72 overflow-y-auto rounded-xl glass-strong border border-border shadow-xl p-1.5 z-40"
+                  >
+                    {CATEGORIES.map((c) => (
+                      <a
+                        key={c.id}
+                        href={`#${c.id}`}
+                        onClick={() => {
+                          setActive(c.id);
+                          setOpenIds((prev) => ({ ...prev, [c.id]: true }));
+                          setCatOpen(false);
+                        }}
+                        className={`block px-3 py-2 rounded-lg text-xs sm:text-sm text-right transition ${
+                          active === c.id
+                            ? "bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold"
+                            : "hover:bg-[var(--gold)]/10 text-foreground/80"
+                        }`}
+                      >
+                        {c.label}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Filters dropdown (price + sort + expand/collapse) */}
+            <div ref={filterRef} className="relative order-3">
+              <button
+                type="button"
+                onClick={() => { setFilterOpen((v) => !v); setCatOpen(false); }}
+                aria-label="الفلاتر"
+                className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-xl border text-xs sm:text-sm font-medium transition ${
+                  filtersActive ? "border-[var(--gold)]/60 text-[var(--gold)]" : "border-border hover:border-[var(--gold)]/60"
+                }`}
+              >
+                <ListFilter className="h-4 w-4" />
+                <span className="hidden sm:inline">فلاتر</span>
+                {filtersActive && <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)]" />}
+              </button>
+              <AnimatePresence>
+                {filterOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-64 rounded-xl glass-strong border border-border shadow-xl p-3 z-40 space-y-3"
+                  >
+                    <div>
+                      <div className="text-[10px] tracking-[0.25em] text-[var(--gold)] mb-1.5 flex items-center gap-1.5">
+                        <SlidersHorizontal className="h-3 w-3" /> السعر
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {bands.map((b) => (
+                          <button
+                            key={b.id}
+                            type="button"
+                            onClick={() => setPriceBand(b.id)}
+                            className={`px-2 py-1.5 rounded-lg text-[11px] font-medium transition ${
+                              priceBand === b.id
+                                ? "bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/40"
+                                : "border border-border text-foreground/70 hover:text-[var(--gold)]"
+                            }`}
+                          >
+                            {b.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] tracking-[0.25em] text-[var(--gold)] mb-1.5">الترتيب</div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {([
+                          { id: "default", label: "افتراضي" },
+                          { id: "asc", label: "السعر ↑" },
+                          { id: "desc", label: "السعر ↓" },
+                        ] as const).map((s) => (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => setSort(s.id)}
+                            className={`px-2 py-1.5 rounded-lg text-[11px] font-medium transition ${
+                              sort === s.id
+                                ? "bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/40"
+                                : "border border-border text-foreground/70 hover:text-[var(--gold)]"
+                            }`}
+                          >
+                            {s.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-border flex items-center justify-between gap-2">
+                      <button
+                        type="button"
+                        onClick={() => (Object.values(openIds).every(Boolean) ? collapseAll() : expandAll())}
+                        className="text-[11px] text-foreground/70 hover:text-[var(--gold)]"
+                      >
+                        {Object.values(openIds).every(Boolean) ? "طيّ كل الأقسام" : "فتح كل الأقسام"}
+                      </button>
+                      {filtersActive && (
+                        <button type="button" onClick={resetFilters} className="text-[11px] text-[var(--gold)] hover:underline">
+                          إعادة الضبط
+                        </button>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Cart */}
             <Link
               to="/cart"
               aria-label="السلة"
-              className="shrink-0 inline-flex items-center gap-1.5 px-3 h-11 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
+              className="order-4 shrink-0 inline-flex items-center gap-1.5 px-3 h-10 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
             >
               <ShoppingBag className="h-4 w-4 text-[var(--gold)]" />
               <span className="font-bold">{count}</span>
             </Link>
           </div>
 
-          <div className="glass-strong rounded-2xl p-1.5 sm:p-2 flex gap-1.5 sm:gap-2 overflow-x-auto scroll-x-snap">
-            {CATEGORIES.map((c) => (
-              <a
-                key={c.id}
-                href={`#${c.id}`}
-                onClick={() => {
-                  setActive(c.id);
-                  setOpenIds((prev) => ({ ...prev, [c.id]: true }));
-                }}
-                className={`snap-item shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${
-                  active === c.id
-                    ? "bg-gradient-gold text-[oklch(0.1_0.012_40)] shadow-gold"
-                    : "text-foreground/80 hover:text-[var(--gold)]"
-                }`}
-              >
-                {c.label}
-              </a>
-            ))}
-          </div>
-
-          <div className="glass-strong rounded-2xl p-2 flex items-center gap-2 overflow-x-auto scroll-x-snap">
-            <SlidersHorizontal className="h-4 w-4 text-[var(--gold)]/80 shrink-0 mr-1" />
-            {bands.map((b) => (
-              <button
-                key={b.id}
-                type="button"
-                onClick={() => setPriceBand(b.id)}
-                className={`snap-item shrink-0 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition ${
-                  priceBand === b.id
-                    ? "bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/40"
-                    : "border border-border text-foreground/70 hover:text-[var(--gold)]"
-                }`}
-              >
-                {b.label}
-              </button>
-            ))}
-            <div className="mx-1 h-5 w-px bg-border shrink-0" />
-            <button
-              type="button"
-              onClick={() =>
-                setSort(sort === "default" ? "asc" : sort === "asc" ? "desc" : "default")
-              }
-              className="snap-item shrink-0 px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-border text-foreground/80 hover:text-[var(--gold)] transition"
-            >
-              السعر {sort === "asc" ? "↑" : sort === "desc" ? "↓" : "—"}
-            </button>
-            <button
-              type="button"
-              onClick={() => (Object.values(openIds).every(Boolean) ? collapseAll() : expandAll())}
-              className="snap-item shrink-0 mr-auto px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-border text-foreground/80 hover:text-[var(--gold)] transition"
-            >
-              {Object.values(openIds).every(Boolean) ? "طيّ الكل" : "فتح الكل"}
-            </button>
-          </div>
-
           {filtersActive && (
-            <div className="flex items-center justify-between text-[11px] sm:text-xs px-1">
-              <span className="text-muted-foreground">{totalHits} نتيجة</span>
+            <div className="flex items-center justify-between text-[11px] sm:text-xs px-1 mt-2">
+              <span className="text-muted-foreground">{totalHits} نتيجة • {activeBand.label} • {sortLabel}</span>
               <button type="button" onClick={resetFilters} className="text-[var(--gold)] hover:underline">
                 إعادة ضبط الفلاتر
               </button>
