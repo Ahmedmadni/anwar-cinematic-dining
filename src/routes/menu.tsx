@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, type Dish } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter } from "lucide-react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter, Volume2, VolumeX } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { playClick, playSuccess, isMuted, toggleMuted } from "@/lib/sound";
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -31,8 +32,25 @@ function MenuPage() {
   const { add, count, setQty, items } = useCart();
   const [catOpen, setCatOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [muted, setMutedState] = useState(false);
+  const [pinged, setPinged] = useState<string | null>(null);
   const catRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMutedState(isMuted());
+    const onChange = (e: Event) => setMutedState((e as CustomEvent<boolean>).detail);
+    window.addEventListener("aam-sound-muted", onChange);
+    return () => window.removeEventListener("aam-sound-muted", onChange);
+  }, []);
+
+  const handleAdd = (id: string, opts?: { success?: boolean }) => {
+    add(id);
+    if (opts?.success) playSuccess();
+    else playClick();
+    setPinged(id);
+    window.setTimeout(() => setPinged((cur) => (cur === id ? null : cur)), 650);
+  };
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -274,10 +292,22 @@ function MenuPage() {
               to="/cart"
               aria-label="السلة"
               className="order-4 shrink-0 inline-flex items-center gap-1.5 px-3 h-10 rounded-xl glass text-xs sm:text-sm hover:border-[var(--gold)] transition"
+              onClick={() => playClick()}
             >
               <ShoppingBag className="h-4 w-4 text-[var(--gold)]" />
               <span className="font-bold">{count}</span>
             </Link>
+
+            {/* Sound toggle */}
+            <button
+              type="button"
+              onClick={() => { toggleMuted(); if (isMuted() === false) playClick(); }}
+              aria-label={muted ? "تشغيل الصوت" : "كتم الصوت"}
+              title={muted ? "تشغيل الصوت" : "كتم الصوت"}
+              className="order-5 shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-xl border border-border hover:border-[var(--gold)]/60 text-[var(--gold)]/80 hover:text-[var(--gold)] transition"
+            >
+              {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            </button>
           </div>
 
           {filtersActive && (
@@ -342,8 +372,9 @@ function MenuPage() {
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true, margin: "-40px" }}
                               transition={{ duration: 0.4, delay: Math.min(i * 0.05, 0.25) }}
-                              onClick={() => setSelected(d)}
-                              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/50 transition-all cursor-pointer text-right"
+                              onClick={() => { playClick(); setSelected(d); }}
+                              whileHover={{ y: -4 }}
+                              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-[var(--gold)]/60 hover:shadow-gold transition-all cursor-pointer text-right"
                             >
                               <motion.div layoutId={`dish-img-${d.id}`} className="relative aspect-[16/10] sm:aspect-[5/4] overflow-hidden">
                                 <img src={d.img} alt={d.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -361,10 +392,13 @@ function MenuPage() {
                                     <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
                                   </div>
                                   <button
-                                    onClick={(e) => { e.stopPropagation(); add(d.id); }}
-                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation"
+                                    onClick={(e) => { e.stopPropagation(); handleAdd(d.id); }}
+                                    className="gold-sweep relative inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation shadow-gold"
                                   >
                                     <Plus className="h-4 w-4" /> أضف
+                                    {pinged === d.id && (
+                                      <span className="pointer-events-none absolute inset-0 rounded-xl bg-[var(--gold)]/50 ping-ring" />
+                                    )}
                                   </button>
                                 </div>
                               </div>
@@ -448,7 +482,7 @@ function MenuPage() {
                     <div className="inline-flex items-center gap-2 rounded-2xl glass-strong p-1.5">
                       <button
                         type="button"
-                        onClick={() => setQty(selected.id, qtyOf(selected.id) - 1)}
+                        onClick={() => { playClick(); setQty(selected.id, qtyOf(selected.id) - 1); }}
                         aria-label="إنقاص"
                         className="h-10 w-10 grid place-items-center rounded-xl hover:bg-[var(--gold)]/10 text-[var(--gold)] touch-manipulation"
                       >
@@ -457,7 +491,7 @@ function MenuPage() {
                       <span className="min-w-8 text-center font-bold tabular-nums">{qtyOf(selected.id)}</span>
                       <button
                         type="button"
-                        onClick={() => add(selected.id)}
+                        onClick={() => handleAdd(selected.id)}
                         aria-label="زيادة"
                         className="h-10 w-10 grid place-items-center rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] touch-manipulation"
                       >
@@ -467,8 +501,8 @@ function MenuPage() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => add(selected.id)}
-                      className="inline-flex items-center gap-2 px-5 h-11 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-sm font-bold hover:scale-[1.03] active:scale-95 transition-transform touch-manipulation"
+                      onClick={() => handleAdd(selected.id, { success: true })}
+                      className="gold-sweep inline-flex items-center gap-2 px-5 h-11 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-sm font-bold hover:scale-[1.03] active:scale-95 transition-transform touch-manipulation shadow-gold"
                     >
                       <Plus className="h-4 w-4" /> أضف للسلة
                     </button>
