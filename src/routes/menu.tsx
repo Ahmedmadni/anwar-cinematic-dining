@@ -20,6 +20,28 @@ export const Route = createFileRoute("/menu")({
   component: MenuPage,
 });
 
+function AddToCartToast({ dish, t }: { dish: Dish; t: string | number }) {
+  return (
+    <div className="flex items-center gap-3 w-full">
+      <div className="h-10 w-10 rounded-full bg-gradient-gold grid place-items-center shrink-0 shadow-gold">
+        <Check className="h-5 w-5 text-[oklch(0.1_0.012_40)]" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-foreground line-clamp-1">تم إضافة {dish.name}</p>
+        <p className="text-[11px] text-muted-foreground">إلى سلة المشتريات</p>
+      </div>
+      <Link
+        to="/cart"
+        onClick={() => toast.dismiss(t)}
+        className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-gold text-[oklch(0.1_0.012_40)] text-[11px] font-bold hover:scale-105 active:scale-95 transition-transform shadow-gold"
+      >
+        <ShoppingBag className="h-3.5 w-3.5" />
+        السلة
+      </Link>
+    </div>
+  );
+}
+
 function MenuPage() {
   const isMobile = useIsMobile();
   const [active, setActive] = useState(CATEGORIES[0].id);
