@@ -67,12 +67,17 @@ function MenuPage() {
     return () => window.removeEventListener("aam-sound-muted", onChange);
   }, []);
 
-  const handleAdd = (id: string, opts?: { success?: boolean }) => {
+  const handleAdd = (id: string, opts?: { success?: boolean; dish?: Dish }) => {
     add(id);
     if (opts?.success) playSuccess();
     else playClick();
     setPinged(id);
     window.setTimeout(() => setPinged((cur) => (cur === id ? null : cur)), 650);
+    if (opts?.dish) {
+      toast.custom((t) => <AddToCartToast dish={opts.dish!} t={t} />, {
+        duration: 4200,
+      });
+    }
   };
 
   useEffect(() => {
