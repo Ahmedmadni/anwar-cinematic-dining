@@ -529,7 +529,7 @@ function MenuPage() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => handleAdd(selected.id, { success: true })}
+                      onClick={() => handleAdd(selected.id, { success: true, dish: selected })}
                       className="gold-sweep inline-flex items-center gap-2 px-5 h-11 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-sm font-bold hover:scale-[1.03] active:scale-95 transition-transform touch-manipulation shadow-gold"
                     >
                       <Plus className="h-4 w-4" /> أضف للسلة
