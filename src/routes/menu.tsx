@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, type Dish } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter, Volume2, VolumeX } from "lucide-react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter, Volume2, VolumeX, Check } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { playClick, playSuccess, isMuted, toggleMuted } from "@/lib/sound";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -18,6 +19,28 @@ export const Route = createFileRoute("/menu")({
   }),
   component: MenuPage,
 });
+
+function AddToCartToast({ dish, t }: { dish: Dish; t: string | number }) {
+  return (
+    <div className="flex items-center gap-3 w-full">
+      <div className="h-10 w-10 rounded-full bg-gradient-gold grid place-items-center shrink-0 shadow-gold">
+        <Check className="h-5 w-5 text-[oklch(0.1_0.012_40)]" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-foreground line-clamp-1">تم إضافة {dish.name}</p>
+        <p className="text-[11px] text-muted-foreground">إلى سلة المشتريات</p>
+      </div>
+      <Link
+        to="/cart"
+        onClick={() => toast.dismiss(t)}
+        className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-gold text-[oklch(0.1_0.012_40)] text-[11px] font-bold hover:scale-105 active:scale-95 transition-transform shadow-gold"
+      >
+        <ShoppingBag className="h-3.5 w-3.5" />
+        السلة
+      </Link>
+    </div>
+  );
+}
 
 function MenuPage() {
   const isMobile = useIsMobile();
@@ -44,12 +67,17 @@ function MenuPage() {
     return () => window.removeEventListener("aam-sound-muted", onChange);
   }, []);
 
-  const handleAdd = (id: string, opts?: { success?: boolean }) => {
+  const handleAdd = (id: string, opts?: { success?: boolean; dish?: Dish }) => {
     add(id);
     if (opts?.success) playSuccess();
     else playClick();
     setPinged(id);
     window.setTimeout(() => setPinged((cur) => (cur === id ? null : cur)), 650);
+    if (opts?.dish) {
+      toast.custom((t) => <AddToCartToast dish={opts.dish!} t={t} />, {
+        duration: 4200,
+      });
+    }
   };
 
   useEffect(() => {
@@ -392,7 +420,7 @@ function MenuPage() {
                                     <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
                                   </div>
                                   <button
-                                    onClick={(e) => { e.stopPropagation(); handleAdd(d.id); }}
+                                    onClick={(e) => { e.stopPropagation(); handleAdd(d.id, { dish: d }); }}
                                     className="gold-sweep relative inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation shadow-gold"
                                   >
                                     <Plus className="h-4 w-4" /> أضف
@@ -501,7 +529,7 @@ function MenuPage() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => handleAdd(selected.id, { success: true })}
+                      onClick={() => handleAdd(selected.id, { success: true, dish: selected })}
                       className="gold-sweep inline-flex items-center gap-2 px-5 h-11 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-sm font-bold hover:scale-[1.03] active:scale-95 transition-transform touch-manipulation shadow-gold"
                     >
                       <Plus className="h-4 w-4" /> أضف للسلة
