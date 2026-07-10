@@ -420,7 +420,7 @@ function MenuPage() {
                                     <span className="text-[11px] text-muted-foreground mr-1">ج.م</span>
                                   </div>
                                   <button
-                                    onClick={(e) => { e.stopPropagation(); handleAdd(d.id); }}
+                                    onClick={(e) => { e.stopPropagation(); handleAdd(d.id, { dish: d }); }}
                                     className="gold-sweep relative inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-gold text-[oklch(0.1_0.012_40)] text-xs font-bold hover:scale-[1.05] active:scale-95 transition-transform touch-manipulation shadow-gold"
                                   >
                                     <Plus className="h-4 w-4" /> أضف
