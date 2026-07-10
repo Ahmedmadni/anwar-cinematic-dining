@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, type Dish } from "@/lib/menu-data";
 import { useCart } from "@/lib/cart";
-import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter, Volume2, VolumeX } from "lucide-react";
+import { Plus, ShoppingBag, Search, ChevronDown, X, SlidersHorizontal, Minus, ListFilter, Volume2, VolumeX, Check } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { playClick, playSuccess, isMuted, toggleMuted } from "@/lib/sound";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
