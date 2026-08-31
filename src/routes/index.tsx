@@ -121,7 +121,7 @@ function Home() {
 
 
       {/* Trust strip */}
-      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)] [&_*]:!text-[oklch(0.74_0.03_75)]">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 text-center">
           {[
             { k: "+25", v: "سنة خبرة" },
@@ -131,7 +131,7 @@ function Home() {
           ].map((s) => (
             <div key={s.v}>
               <div className="font-poster text-3xl sm:text-5xl text-gold">{s.k}</div>
-              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground mt-2">{s.v}</div>
+              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-[oklch(0.74_0.03_75)] mt-2">{s.v}</div>
             </div>
           ))}
         </div>
