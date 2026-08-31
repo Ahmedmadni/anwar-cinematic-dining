@@ -55,41 +55,35 @@ const dict: Record<string, { ar: string; en: string }> = {
 const PrefCtx = createContext<Ctx | null>(null);
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
-  const readLang = (): Lang => {
-    if (typeof window === "undefined") return "ar";
-    try {
-      const l = localStorage.getItem("aam.lang");
-      if (l === "ar" || l === "en") return l;
-      const d = document.documentElement.lang;
-      if (d === "ar" || d === "en") return d;
-    } catch {}
-    return "ar";
-  };
-  const readTheme = (): Theme => {
-    if (typeof window === "undefined") return "dark";
-    try {
-      const t = localStorage.getItem("aam.theme");
-      if (t === "dark" || t === "light") return t;
-      const d = document.documentElement.dataset.theme;
-      if (d === "dark" || d === "light") return d as Theme;
-    } catch {}
-    return "dark";
-  };
-  const [lang, setLangState] = useState<Lang>(readLang);
-  const [theme, setThemeState] = useState<Theme>(readTheme);
+  // Start from SSR-safe defaults so the first client render matches the server HTML.
+  const [lang, setLangState] = useState<Lang>("ar");
+  const [theme, setThemeState] = useState<Theme>("dark");
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    try {
+      const l = localStorage.getItem("aam.lang");
+      if (l === "ar" || l === "en") setLangState(l);
+      const t = localStorage.getItem("aam.theme");
+      if (t === "dark" || t === "light") setThemeState(t);
+    } catch {}
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     const html = document.documentElement;
     html.lang = lang;
     html.dir = lang === "ar" ? "rtl" : "ltr";
     html.dataset.theme = theme;
     try { localStorage.setItem("aam.lang", lang); localStorage.setItem("aam.theme", theme); } catch {}
-  }, [lang, theme]);
+  }, [lang, theme, hydrated]);
 
   const setLang = (l: Lang) => setLangState(l);
   const setTheme = (t: Theme) => setThemeState(t);
   const toggleLang = () => setLangState((l) => (l === "ar" ? "en" : "ar"));
   const toggleTheme = () => setThemeState((t) => (t === "dark" ? "light" : "dark"));
+
   const t = (key: string) => dict[key]?.[lang] ?? key;
 
   return (
