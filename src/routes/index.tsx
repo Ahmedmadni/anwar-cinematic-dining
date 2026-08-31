@@ -62,8 +62,8 @@ function Home() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
                   </div>
                   <div className="absolute bottom-0 inset-x-0 p-3 sm:p-5">
-                    <div className="font-display text-sm sm:text-xl group-hover:text-[var(--gold)] transition-colors">{c.label}</div>
-                    <div className="text-[10px] sm:text-xs text-foreground/70 mt-1 line-clamp-2">{c.tagline}</div>
+                    <div className="font-display text-sm sm:text-xl text-[oklch(0.96_0.02_85)] group-hover:text-[var(--gold)] transition-colors">{c.label}</div>
+                    <div className="text-[10px] sm:text-xs text-[oklch(0.96_0.02_85/0.75)] mt-1 line-clamp-2">{c.tagline}</div>
                   </div>
                 </Link>
               </motion.div>
@@ -131,7 +131,7 @@ function Home() {
           ].map((s) => (
             <div key={s.v}>
               <div className="font-poster text-3xl sm:text-5xl text-gold">{s.k}</div>
-              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground mt-2">{s.v}</div>
+              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-[oklch(0.74_0.03_75)] mt-2">{s.v}</div>
             </div>
           ))}
         </div>

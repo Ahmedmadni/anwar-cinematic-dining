@@ -123,11 +123,11 @@ export function HeroVideo() {
           </div>
           <h1 className="font-poster text-[2.5rem] xs:text-5xl sm:text-7xl md:text-8xl leading-[1.05] mb-5 sm:mb-6">
             <span className="block shimmer-gold">{t("hero.title")}</span>
-            <span className="block text-foreground/95 text-2xl sm:text-4xl md:text-5xl mt-2 sm:mt-3 font-display">
+            <span className="block text-[oklch(0.96_0.02_85)] text-2xl sm:text-4xl md:text-5xl mt-2 sm:mt-3 font-display">
               {t("hero.subtitle")}
             </span>
           </h1>
-          <p className="text-foreground/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-9 px-2">
+          <p className="text-[oklch(0.96_0.02_85/0.85)] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-9 px-2">
             {t("hero.desc")}
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
