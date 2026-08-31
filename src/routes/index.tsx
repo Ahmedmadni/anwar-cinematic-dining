@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { HeroVideo } from "@/components/site/HeroVideo";
-import { CATEGORIES } from "@/lib/menu-data";
+import { CATEGORIES, ALL_DISHES } from "@/lib/menu-data";
+
+const SIGNATURE = ["g1", "t1", "k1", "d1"]
+  .map((id) => ALL_DISHES.find((d) => d.id === id)!)
+  .filter(Boolean);
+
 import { ArrowLeft, Star } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -66,6 +71,54 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Signature dishes */}
+      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">التوقيع</div>
+            <h2 className="font-poster text-2xl sm:text-4xl md:text-5xl">أطباق لا تُفوَّت</h2>
+            <div className="gold-divider mt-6 max-w-md mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            {SIGNATURE.map((d, i) => (
+              <motion.div
+                key={d.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+              >
+                <Link
+                  to="/menu"
+                  className="group block rounded-3xl overflow-hidden bg-card border border-border hover:border-[var(--gold)]/60 hover:-translate-y-1 transition-all duration-500"
+                >
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={d.img}
+                      alt={d.name}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-110"
+                    />
+                    {d.tag && (
+                      <span className="absolute top-2 start-2 rounded-full bg-gradient-gold px-2.5 py-1 text-[10px] font-bold text-[oklch(0.1_0.012_40)]">
+                        {d.tag}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <div className="font-display text-sm sm:text-base line-clamp-1 group-hover:text-[var(--gold)] transition-colors">{d.name}</div>
+                    <div className="mt-1 text-[10px] sm:text-xs text-muted-foreground line-clamp-2">{d.desc}</div>
+                    <div className="mt-2 font-poster text-base sm:text-lg text-gold tabular-nums">{d.price} ج.م</div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* Trust strip */}
       <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">

@@ -16,6 +16,8 @@ import { FloatingContacts } from "@/components/site/FloatingContacts";
 import { PreferencesProvider } from "@/lib/preferences";
 import { Assistant } from "@/components/site/Assistant";
 import { Toaster } from "@/components/ui/sonner";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
+
 
 function NotFoundComponent() {
   return (
@@ -112,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script
@@ -138,6 +140,8 @@ function RootComponent() {
         <CartProvider>
           <div className="relative min-h-screen bg-background text-foreground">
             <Nav />
+            <ScrollProgress />
+
             <Outlet />
             <Footer />
             <FloatingContacts />
