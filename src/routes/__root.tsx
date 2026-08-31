@@ -16,6 +16,8 @@ import { FloatingContacts } from "@/components/site/FloatingContacts";
 import { PreferencesProvider } from "@/lib/preferences";
 import { Assistant } from "@/components/site/Assistant";
 import { Toaster } from "@/components/ui/sonner";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
+
 
 function NotFoundComponent() {
   return (
