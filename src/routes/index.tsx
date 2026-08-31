@@ -121,7 +121,7 @@ function Home() {
 
 
       {/* Trust strip */}
-      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)] [&_*]:!text-[oklch(0.74_0.03_75)]">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 text-center">
           {[
             { k: "+25", v: "سنة خبرة" },
