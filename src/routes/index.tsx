@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { HeroVideo } from "@/components/site/HeroVideo";
-import { CATEGORIES } from "@/lib/menu-data";
+import { CATEGORIES, ALL_DISHES } from "@/lib/menu-data";
+
+const SIGNATURE = ["g1", "t1", "k1", "d1"]
+  .map((id) => ALL_DISHES.find((d) => d.id === id)!)
+  .filter(Boolean);
+
 import { ArrowLeft, Star } from "lucide-react";
 
 export const Route = createFileRoute("/")({
