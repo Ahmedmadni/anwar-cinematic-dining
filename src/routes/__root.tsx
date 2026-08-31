@@ -140,6 +140,8 @@ function RootComponent() {
         <CartProvider>
           <div className="relative min-h-screen bg-background text-foreground">
             <Nav />
+            <ScrollProgress />
+
             <Outlet />
             <Footer />
             <FloatingContacts />
