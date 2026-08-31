@@ -108,7 +108,7 @@ export function Assistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={t("ai.placeholder")}
-                className="flex-1 bg-[oklch(0.1_0.01_40/0.6)] border border-[var(--gold)]/20 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--gold)]/60"
+                className="flex-1 bg-muted border border-[var(--gold)]/20 rounded-xl px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[var(--gold)]/60"
                 disabled={loading}
               />
               <button

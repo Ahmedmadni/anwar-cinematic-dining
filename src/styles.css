@@ -135,11 +135,7 @@ html[data-theme="light"] .glass-strong {
   background: oklch(0.98 0.012 82 / 0.88);
   border-color: oklch(0.63 0.09 68 / 0.3);
 }
-html[data-theme="light"] .hero-vignette {
-  background:
-    radial-gradient(ellipse at center, transparent 0%, oklch(0.94 0.02 80 / 0.35) 70%, oklch(0.92 0.025 78 / 0.9) 100%),
-    linear-gradient(180deg, oklch(0.955 0.014 80 / 0.25) 0%, transparent 35%, oklch(0.93 0.025 78 / 0.95) 100%);
-}
+/* Hero stays cinematic dark in both themes — keep the dark vignette, no light override */
 html[data-theme="light"] .shimmer-gold {
   background: linear-gradient(110deg, oklch(0.68 0.1 72) 0%, oklch(0.5 0.09 58) 50%, oklch(0.74 0.1 78) 100%);
   background-size: 200% 200%;
