@@ -121,9 +121,9 @@ export function HeroVideo() {
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--gold)] animate-pulse" />
             {t("hero.badge")}
           </div>
-          <h1 className="font-poster text-[2.5rem] xs:text-5xl sm:text-7xl md:text-8xl leading-[1.05] mb-5 sm:mb-6">
+          <h1 className="font-poster text-[2.25rem] xs:text-4xl sm:text-6xl md:text-7xl leading-[1.05] mb-5 sm:mb-6">
             <span className="block shimmer-gold">{t("hero.title")}</span>
-            <span className="block text-[oklch(0.96_0.02_85)] text-2xl sm:text-4xl md:text-5xl mt-2 sm:mt-3 font-display">
+            <span className="block text-[oklch(0.96_0.02_85)] text-xl sm:text-3xl md:text-4xl mt-2 sm:mt-3 font-display">
               {t("hero.subtitle")}
             </span>
           </h1>

@@ -26,7 +26,7 @@ function BranchesPage() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">فروعنا</div>
-          <h1 className="font-poster text-5xl md:text-6xl">٥ فروع في قلب مغاغة</h1>
+          <h1 className="font-poster text-4xl md:text-5xl">٥ فروع في قلب مغاغة</h1>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
             تجربة موحدة من الفخامة والطعم البلدي الأصيل، حيثما كنت في المدينة.
           </p>

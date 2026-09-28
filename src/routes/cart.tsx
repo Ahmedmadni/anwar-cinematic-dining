@@ -55,7 +55,7 @@ function CartPage() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">سلة الطلبات</div>
-          <h1 className="font-poster text-5xl md:text-6xl">طلبك جاهز للإرسال</h1>
+          <h1 className="font-poster text-4xl md:text-5xl">طلبك جاهز للإرسال</h1>
         </div>
 
         {rows.length === 0 ? (

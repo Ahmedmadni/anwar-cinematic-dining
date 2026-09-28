@@ -65,7 +65,7 @@ function OffersPage() {
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">
             {lang === "ar" ? "العروض" : "OFFERS"}
           </div>
-          <h1 className="font-poster text-4xl md:text-6xl">
+          <h1 className="font-poster text-3xl md:text-5xl">
             {lang === "ar" ? "عروض المدينة هذا الأسبوع" : "This Week At Al Madina"}
           </h1>
           <p className="mt-4 text-foreground/70 max-w-2xl mx-auto">

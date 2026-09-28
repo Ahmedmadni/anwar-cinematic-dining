@@ -42,7 +42,7 @@ function GalleryPage() {
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">
             {lang === "ar" ? "المعرض" : "GALLERY"}
           </div>
-          <h1 className="font-poster text-4xl md:text-6xl">
+          <h1 className="font-poster text-3xl md:text-5xl">
             {lang === "ar" ? "لقطات من قلب المطبخ" : "Frames From The Kitchen"}
           </h1>
           <div className="gold-divider mx-auto mt-6 max-w-xs" />
