@@ -24,7 +24,7 @@ function ReservationPage() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">حجز طاولة</div>
-          <h1 className="font-poster text-5xl md:text-6xl">تجربة عشاء كاملة</h1>
+          <h1 className="font-poster text-4xl md:text-5xl">تجربة عشاء كاملة</h1>
           <p className="text-muted-foreground mt-4">اختر التوقيت الذي يناسبك وسنجهز كل شيء.</p>
         </div>
 

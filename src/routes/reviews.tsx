@@ -81,7 +81,7 @@ function ReviewsPage() {
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">
             {lang === "ar" ? "الشهادات" : "TESTIMONIALS"}
           </div>
-          <h1 className="font-poster text-4xl md:text-6xl">
+          <h1 className="font-poster text-3xl md:text-5xl">
             {lang === "ar" ? "قالوا عن أنوار المدينة" : "What Guests Say"}
           </h1>
           <div className="mt-5 flex items-center justify-center gap-3">

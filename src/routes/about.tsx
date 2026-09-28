@@ -17,7 +17,7 @@ function AboutPage() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <div className="text-[11px] tracking-[0.4em] text-[var(--gold)] mb-3">قصتنا</div>
-          <h1 className="font-poster text-5xl md:text-6xl">من مغاغة إلى قلوب محبي الطعم البلدي</h1>
+          <h1 className="font-poster text-4xl md:text-5xl">من مغاغة إلى قلوب محبي الطعم البلدي</h1>
         </div>
 
         <div className="relative aspect-[16/9] rounded-3xl overflow-hidden mb-12 shadow-cinematic">

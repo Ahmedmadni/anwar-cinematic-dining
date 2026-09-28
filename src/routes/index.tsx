@@ -35,7 +35,7 @@ function Home() {
           <div className="flex items-end justify-between mb-8 sm:mb-10 gap-3">
             <div>
               <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">المنيو</div>
-              <h2 className="font-poster text-2xl sm:text-4xl md:text-5xl">معرض الذوق المصري</h2>
+              <h2 className="font-poster text-xl sm:text-3xl md:text-4xl">معرض الذوق المصري</h2>
             </div>
             <Link to="/menu" className="hidden md:inline-flex items-center gap-2 text-sm text-[var(--gold)] hover:gap-3 transition-all">
               كل الأصناف <ArrowLeft className="h-4 w-4" />
@@ -77,7 +77,7 @@ function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
             <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">التوقيع</div>
-            <h2 className="font-poster text-2xl sm:text-4xl md:text-5xl">أطباق لا تُفوَّت</h2>
+            <h2 className="font-poster text-xl sm:text-3xl md:text-4xl">أطباق لا تُفوَّت</h2>
             <div className="gold-divider mt-6 max-w-md mx-auto" />
           </div>
 
@@ -130,7 +130,7 @@ function Home() {
             { k: "30د", v: "متوسط التوصيل" },
           ].map((s) => (
             <div key={s.v}>
-              <div className="font-poster text-3xl sm:text-5xl text-gold">{s.k}</div>
+              <div className="font-poster text-2xl sm:text-4xl text-gold">{s.k}</div>
               <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-[oklch(0.74_0.03_75)] mt-2">{s.v}</div>
             </div>
           ))}

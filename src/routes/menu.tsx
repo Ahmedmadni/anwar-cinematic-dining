@@ -156,7 +156,7 @@ function MenuPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-10">
           <div className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] text-[var(--gold)] mb-2 sm:mb-3">القائمة الكاملة</div>
-          <h1 className="font-poster text-3xl sm:text-5xl md:text-6xl mb-3">منيو أنوار المدينة</h1>
+          <h1 className="font-poster text-2xl sm:text-4xl md:text-5xl mb-3">منيو أنوار المدينة</h1>
           <div className="gold-divider w-32 sm:w-40 mx-auto mt-4 sm:mt-5" />
         </div>
 
@@ -363,7 +363,7 @@ function MenuPage() {
                 >
                   <div className="min-w-0 flex-1">
                     <div className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] text-[var(--gold)] mb-1 sm:mb-2">قسم</div>
-                    <h2 className="font-poster text-2xl sm:text-3xl md:text-5xl truncate">{c.label}</h2>
+                    <h2 className="font-poster text-xl sm:text-2xl md:text-4xl truncate">{c.label}</h2>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2 line-clamp-1">{c.tagline}</p>
                   </div>
                   <div className="shrink-0 flex items-center gap-2">
