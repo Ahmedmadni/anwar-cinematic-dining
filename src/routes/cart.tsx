@@ -9,6 +9,10 @@ export const Route = createFileRoute("/cart")({
     meta: [
       { title: "سلة الطلبات | أنوار المدينة" },
       { name: "description", content: "أكمل طلبك من مطعم أنوار المدينة بتوصيل سريع." },
+      { property: "og:title", content: "سلة الطلبات | أنوار المدينة" },
+      { property: "og:description", content: "أكمل طلبك من مطعم أنوار المدينة بتوصيل سريع." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: CartPage,

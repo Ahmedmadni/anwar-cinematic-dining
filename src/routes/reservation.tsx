@@ -7,6 +7,10 @@ export const Route = createFileRoute("/reservation")({
     meta: [
       { title: "احجز طاولتك | أنوار المدينة" },
       { name: "description", content: "احجز طاولتك في أنوار المدينة — تجربة عشاء مصرية فاخرة." },
+      { property: "og:title", content: "احجز طاولتك | أنوار المدينة" },
+      { property: "og:description", content: "احجز طاولتك في أنوار المدينة — تجربة عشاء مصرية فاخرة." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ReservationPage,

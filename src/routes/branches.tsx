@@ -15,6 +15,10 @@ export const Route = createFileRoute("/branches")({
     meta: [
       { title: "فروعنا | أنوار المدينة — مغاغة، المنيا" },
       { name: "description", content: "اعثر على أقرب فرع لأنوار المدينة في مغاغة، محافظة المنيا." },
+      { property: "og:title", content: "فروعنا | أنوار المدينة — مغاغة، المنيا" },
+      { property: "og:description", content: "اعثر على أقرب فرع لأنوار المدينة في مغاغة، محافظة المنيا." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: BranchesPage,

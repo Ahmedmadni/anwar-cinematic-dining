@@ -10,6 +10,8 @@ export const Route = createFileRoute("/offers")({
       { name: "description", content: "عروض المطعم اليومية والأسبوعية على المشاوي والعائلات والتوصيل." },
       { property: "og:title", content: "عروض أنوار المدينة" },
       { property: "og:description", content: "خصومات على وجبات العائلة والتوصيل وأيام المشاوي." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: OffersPage,

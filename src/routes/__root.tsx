@@ -85,8 +85,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "أنوار المدينة" },
       { name: "twitter:description", content: "تجربة طعام مصرية فاخرة في مغاغة، المنيا." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b43a37-aa9e-43fc-8aa4-689ef3d3fcae/id-preview-05e47370--355d0cc7-59a7-4e24-b198-bcc3ea0a1c9c.lovable.app-1779938182868.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/76b43a37-aa9e-43fc-8aa4-689ef3d3fcae/id-preview-05e47370--355d0cc7-59a7-4e24-b198-bcc3ea0a1c9c.lovable.app-1779938182868.png" },
     ],
     links: [
       {
