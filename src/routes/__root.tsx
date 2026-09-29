@@ -112,7 +112,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var l=localStorage.getItem('aam.lang');var t=localStorage.getItem('aam.theme');var h=document.documentElement;if(l==='ar'||l==='en'){h.lang=l;h.dir=l==='ar'?'rtl':'ltr';}if(t==='dark'||t==='light'){h.dataset.theme=t;}else{h.dataset.theme='dark';}}catch(e){}})();`,
+            __html: `(function(){try{var l=localStorage.getItem('aam.lang');var t=localStorage.getItem('aam.theme');var s=localStorage.getItem('aam.textSize');var c=localStorage.getItem('aam.highContrast');var h=document.documentElement;if(l==='ar'||l==='en'){h.lang=l;h.dir=l==='ar'?'rtl':'ltr';}h.dataset.theme=t==='light'?'light':'dark';h.dataset.textSize=s==='large'||s==='larger'?s:'normal';h.dataset.contrast=c==='true'?'high':'normal';}catch(e){}})();`,
           }}
         />
       </head>

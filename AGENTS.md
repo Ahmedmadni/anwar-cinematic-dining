@@ -1,0 +1,1 @@
+Reading preferences are stored per browser and applied as validated HTML data attributes before hydration, so visitor display choices persist across pages without a server or initial flash.
