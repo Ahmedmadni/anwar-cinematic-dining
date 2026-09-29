@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Lang = "ar" | "en";
 export type Theme = "dark" | "light";
+export type TextSize = "normal" | "large" | "larger";
 
 type Ctx = {
   lang: Lang;
@@ -10,6 +11,10 @@ type Ctx = {
   setTheme: (t: Theme) => void;
   toggleLang: () => void;
   toggleTheme: () => void;
+  textSize: TextSize;
+  setTextSize: (size: TextSize) => void;
+  highContrast: boolean;
+  setHighContrast: (enabled: boolean) => void;
   t: (key: string) => string;
 };
 
@@ -58,6 +63,8 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   // Start from SSR-safe defaults so the first client render matches the server HTML.
   const [lang, setLangState] = useState<Lang>("ar");
   const [theme, setThemeState] = useState<Theme>("dark");
+  const [textSize, setTextSize] = useState<TextSize>("normal");
+  const [highContrast, setHighContrast] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -66,6 +73,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       if (l === "ar" || l === "en") setLangState(l);
       const t = localStorage.getItem("aam.theme");
       if (t === "dark" || t === "light") setThemeState(t);
+      const size = localStorage.getItem("aam.textSize");
+      if (size === "normal" || size === "large" || size === "larger") setTextSize(size);
+      setHighContrast(localStorage.getItem("aam.highContrast") === "true");
     } catch {}
     setHydrated(true);
   }, []);
@@ -76,8 +86,15 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     html.lang = lang;
     html.dir = lang === "ar" ? "rtl" : "ltr";
     html.dataset.theme = theme;
-    try { localStorage.setItem("aam.lang", lang); localStorage.setItem("aam.theme", theme); } catch {}
-  }, [lang, theme, hydrated]);
+    html.dataset.textSize = textSize;
+    html.dataset.contrast = highContrast ? "high" : "normal";
+    try {
+      localStorage.setItem("aam.lang", lang);
+      localStorage.setItem("aam.theme", theme);
+      localStorage.setItem("aam.textSize", textSize);
+      localStorage.setItem("aam.highContrast", String(highContrast));
+    } catch {}
+  }, [lang, theme, textSize, highContrast, hydrated]);
 
   const setLang = (l: Lang) => setLangState(l);
   const setTheme = (t: Theme) => setThemeState(t);
@@ -87,7 +104,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const t = (key: string) => dict[key]?.[lang] ?? key;
 
   return (
-    <PrefCtx.Provider value={{ lang, theme, setLang, setTheme, toggleLang, toggleTheme, t }}>
+    <PrefCtx.Provider value={{ lang, theme, setLang, setTheme, toggleLang, toggleTheme, textSize, setTextSize, highContrast, setHighContrast, t }}>
       {children}
     </PrefCtx.Provider>
   );

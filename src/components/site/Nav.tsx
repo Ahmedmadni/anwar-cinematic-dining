@@ -4,6 +4,7 @@ import { useCart } from "@/lib/cart";
 import { ShoppingBag, Menu as MenuIcon, X, Sun, Moon, Languages } from "lucide-react";
 import { useState } from "react";
 import { usePrefs } from "@/lib/preferences";
+import { ReadingSettings } from "@/components/site/ReadingSettings";
 
 type NavLink = {
   to: "/" | "/menu" | "/branches" | "/offers" | "/gallery" | "/reviews" | "/reservation" | "/about";
@@ -61,6 +62,7 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <ReadingSettings />
             <button
               onClick={toggleLang}
               className="hidden sm:flex h-11 w-11 rounded-xl glass items-center justify-center hover:border-[var(--gold)]/60 transition text-xs font-bold"

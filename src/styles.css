@@ -376,3 +376,70 @@ html[data-theme="light"] .cinematic-hero .glass-strong.text-\[var\(--gold\)\],
 html[data-theme="light"] .cinematic-hero .glass-strong .text-\[var\(--gold\)\] {
   color: oklch(0.88 0.12 84);
 }
+
+/* Root scaling enlarges rem-based page typography and spacing together. */
+html[data-text-size="large"] { font-size: 112.5%; }
+html[data-text-size="larger"] { font-size: 125%; }
+
+html[data-contrast="high"] {
+  --background: oklch(0.025 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.075 0 0);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.075 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.94 0 0);
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.22 0 0);
+  --gold: oklch(0.93 0.14 90);
+  --primary: oklch(0.93 0.14 90);
+  --ring: oklch(0.93 0.14 90);
+  --hero-panel: oklch(0.025 0 0 / 0.98);
+  --hero-panel-border: oklch(0.95 0 0);
+}
+html[data-theme="light"][data-contrast="high"] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.06 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.06 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.06 0 0);
+  --muted: oklch(0.93 0 0);
+  --muted-foreground: oklch(0.16 0 0);
+  --border: oklch(0.12 0 0);
+  --input: oklch(0.92 0 0);
+  --gold: oklch(0.35 0.11 55);
+  --primary: oklch(0.35 0.11 55);
+  --primary-foreground: oklch(1 0 0);
+  --ring: oklch(0.25 0 0);
+}
+html[data-contrast="high"] .glass,
+html[data-contrast="high"] .glass-strong {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--card-foreground);
+}
+html[data-contrast="high"] .cinematic-hero .glass-strong,
+html[data-theme="light"][data-contrast="high"] .cinematic-hero .glass-strong {
+  background: var(--hero-panel);
+  border-color: var(--hero-panel-border);
+  color: var(--on-image);
+}
+html[data-contrast="high"] .text-gold,
+html[data-contrast="high"] .shimmer-gold,
+html[data-theme="light"][data-contrast="high"] .shimmer-gold:not(.cinematic-hero .shimmer-gold) {
+  background: none;
+  color: var(--gold);
+}
+html[data-contrast="high"] .cinematic-hero .shimmer-gold { color: var(--on-image); }
+html[data-contrast="high"] .bg-gradient-gold { background: var(--primary); color: var(--primary-foreground); }
+html[data-contrast="high"] .hero-vignette {
+  background: linear-gradient(180deg, oklch(0 0 0 / 0.84), oklch(0 0 0 / 0.77) 45%, oklch(0 0 0 / 0.98));
+}
+@media (max-width: 1450px) {
+  html[data-text-size="large"] header nav,
+  html[data-text-size="larger"] header nav { display: none; }
+  html[data-text-size="large"] header button[aria-label="القائمة"],
+  html[data-text-size="larger"] header button[aria-label="القائمة"] { display: flex; }
+}
