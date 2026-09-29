@@ -262,6 +262,7 @@ html[data-theme="light"] .bg-card {
   }
 
   /* The food-film area remains dark in both themes, including its navigation tiles. */
+  html[data-theme="light"] .cinematic-hero .glass-strong,
   .cinematic-hero .glass-strong {
     background: var(--hero-panel);
     border-color: var(--hero-panel-border);
@@ -269,6 +270,10 @@ html[data-theme="light"] .bg-card {
   }
   .cinematic-hero .glass-strong .text-muted-foreground {
     color: var(--on-image-muted);
+  }
+  .cinematic-hero .glass-strong.text-\[var\(--gold\)\],
+  .cinematic-hero .glass-strong .text-\[var\(--gold\)\] {
+    color: oklch(0.88 0.12 84);
   }
   .cinematic-hero .shimmer-gold {
     background: linear-gradient(110deg, oklch(0.91 0.11 87), oklch(0.99 0.025 90), oklch(0.76 0.13 76));
