@@ -362,3 +362,17 @@ html[data-theme="light"] .bg-card {
   .scroll-x-snap::-webkit-scrollbar { display: none; }
   .snap-item { scroll-snap-align: start; }
 }
+
+/* Unlayered theme overrides must remain unlayered to beat the light-mode glass rules. */
+html[data-theme="light"] .cinematic-hero .glass-strong {
+  background: var(--hero-panel);
+  border-color: var(--hero-panel-border);
+  color: var(--on-image);
+}
+html[data-theme="light"] .cinematic-hero .glass-strong .text-muted-foreground {
+  color: var(--on-image-muted);
+}
+html[data-theme="light"] .cinematic-hero .glass-strong.text-\[var\(--gold\)\],
+html[data-theme="light"] .cinematic-hero .glass-strong .text-\[var\(--gold\)\] {
+  color: oklch(0.88 0.12 84);
+}
