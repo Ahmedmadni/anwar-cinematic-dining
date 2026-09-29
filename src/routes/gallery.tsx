@@ -17,6 +17,8 @@ export const Route = createFileRoute("/gallery")({
       { name: "description", content: "لقطات سينمائية من مطبخ وأجواء مطعم أنوار المدينة في مغاغة." },
       { property: "og:title", content: "معرض الصور | أنوار المدينة" },
       { property: "og:description", content: "لقطات سينمائية من مطبخ وأجواء أنوار المدينة." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: GalleryPage,
@@ -66,7 +68,7 @@ function GalleryPage() {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.05_0.01_40/0.85)] via-transparent to-transparent" />
-              <figcaption className="absolute bottom-3 inset-x-3 text-sm font-medium text-white/95 opacity-0 group-hover:opacity-100 transition-opacity">
+              <figcaption className="absolute bottom-3 inset-x-3 text-sm font-medium text-[var(--on-image)]">
                 {s.cap[lang]}
               </figcaption>
             </motion.figure>
