@@ -15,6 +15,8 @@ export const Route = createFileRoute("/menu")({
       { name: "description", content: "تصفح قائمة طعام أنوار المدينة: مشويات، طواجن، كشري، وحلويات شرقية." },
       { property: "og:title", content: "منيو أنوار المدينة" },
       { property: "og:description", content: "أكثر من ٤٠ صنف بلدي بنكهة سينمائية." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: MenuPage,

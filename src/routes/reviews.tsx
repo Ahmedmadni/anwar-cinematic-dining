@@ -10,6 +10,8 @@ export const Route = createFileRoute("/reviews")({
       { name: "description", content: "شهادات وتقييمات زوار مطعم أنوار المدينة في مغاغة." },
       { property: "og:title", content: "آراء زوار أنوار المدينة" },
       { property: "og:description", content: "قصص حقيقية من طاولات أنوار المدينة." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ReviewsPage,

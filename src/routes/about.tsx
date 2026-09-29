@@ -6,6 +6,10 @@ export const Route = createFileRoute("/about")({
     meta: [
       { title: "قصتنا | أنوار المدينة — شركة المدني العالمية للاستثمار" },
       { name: "description", content: "حكاية أنوار المدينة من مغاغة إلى قلوب محبي الطعام البلدي الأصيل." },
+      { property: "og:title", content: "قصتنا | أنوار المدينة — شركة المدني العالمية للاستثمار" },
+      { property: "og:description", content: "حكاية أنوار المدينة من مغاغة إلى قلوب محبي الطعام البلدي الأصيل." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AboutPage,

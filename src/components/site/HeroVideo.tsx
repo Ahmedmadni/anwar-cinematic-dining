@@ -61,7 +61,7 @@ export function HeroVideo() {
   }, [heroReady, isMobile, backdrops.length]);
 
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center">
+    <section className="cinematic-hero relative min-h-[88svh] w-full overflow-hidden flex items-center justify-center">
       {/* Layer 0 — Instant LQIP (tiny blurred preview, ships in initial HTML) */}
       <img
         src={heroLqip}
@@ -123,17 +123,17 @@ export function HeroVideo() {
           </div>
           <h1 className="font-poster text-[2.25rem] xs:text-4xl sm:text-6xl md:text-7xl leading-[1.05] mb-5 sm:mb-6">
             <span className="block shimmer-gold">{t("hero.title")}</span>
-            <span className="block text-[oklch(0.96_0.02_85)] text-xl sm:text-3xl md:text-4xl mt-2 sm:mt-3 font-display">
+            <span className="block text-[var(--on-image)] text-xl sm:text-3xl md:text-4xl mt-2 sm:mt-3 font-display">
               {t("hero.subtitle")}
             </span>
           </h1>
-          <p className="text-[oklch(0.96_0.02_85/0.85)] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-9 px-2">
+          <p className="text-[var(--on-image-muted)] text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-7 sm:mb-9 px-2">
             {t("hero.desc")}
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
             <Link
               to="/menu"
-              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-2xl bg-gradient-gold text-[oklch(0.1_0.012_40)] font-bold shadow-gold hover:scale-[1.04] transition-transform"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-2xl bg-gradient-gold text-[var(--on-gold)] font-bold shadow-gold hover:scale-[1.04] transition-transform"
             >
               <BookOpen className="h-5 w-5" /> {t("hero.cta.menu")}
             </Link>

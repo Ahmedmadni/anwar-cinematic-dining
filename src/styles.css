@@ -52,12 +52,12 @@
   --secondary: oklch(0.48 0.15 34);
   --secondary-foreground: oklch(0.97 0.015 82);
   --muted: oklch(0.175 0.018 52);
-  --muted-foreground: oklch(0.72 0.035 78);
+  --muted-foreground: oklch(0.79 0.025 82);
   --accent: oklch(0.56 0.21 30);
   --accent-foreground: oklch(0.97 0.015 82);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.82 0.145 82 / 16%);
+  --border: oklch(0.82 0.145 82 / 24%);
   --input: oklch(0.21 0.022 52);
   --ring: oklch(0.82 0.145 82);
   --sidebar: oklch(0.125 0.02 48);
@@ -77,6 +77,11 @@
   --brick: oklch(0.5 0.21 28);
   --maroon: oklch(0.32 0.09 30);
   --ink: oklch(0.065 0.008 42);
+  --on-image: oklch(0.98 0.012 88);
+  --on-image-muted: oklch(0.88 0.02 85);
+  --on-gold: oklch(0.12 0.02 45);
+  --hero-panel: oklch(0.09 0.015 40 / 0.84);
+  --hero-panel-border: oklch(0.88 0.1 85 / 0.35);
 
   --gradient-gold: linear-gradient(135deg, oklch(0.95 0.1 94) 0%, oklch(0.82 0.16 80) 40%, oklch(0.6 0.15 62) 75%, oklch(0.5 0.13 55) 100%);
   --gradient-ember: linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.38 0.17 26) 100%);
@@ -89,24 +94,24 @@
 }
 
 html[data-theme="light"] {
-  /* Sandy hush — warm ivory base, burnished gold accent, deep sepia ink */
-  --background: oklch(0.96 0.016 82);
-  --foreground: oklch(0.26 0.02 58);
-  --card: oklch(0.985 0.014 84);
-  --card-foreground: oklch(0.26 0.02 58);
-  --popover: oklch(0.99 0.012 84);
-  --popover-foreground: oklch(0.26 0.02 58);
-  --primary: oklch(0.6 0.105 66);
+  /* Clean ivory surfaces with grounded bronze accents */
+  --background: oklch(0.975 0.007 88);
+  --foreground: oklch(0.23 0.019 48);
+  --card: oklch(0.995 0.004 88);
+  --card-foreground: oklch(0.23 0.019 48);
+  --popover: oklch(0.995 0.004 88);
+  --popover-foreground: oklch(0.23 0.019 48);
+  --primary: oklch(0.49 0.095 62);
   --primary-foreground: oklch(0.99 0.008 85);
   --secondary: oklch(0.53 0.13 38);
   --secondary-foreground: oklch(0.99 0.008 85);
   --accent: oklch(0.58 0.15 42);
   --accent-foreground: oklch(0.99 0.008 85);
-  --muted: oklch(0.915 0.022 84);
-  --muted-foreground: oklch(0.45 0.03 60);
-  --border: oklch(0.6 0.105 66 / 24%);
-  --input: oklch(0.915 0.022 84);
-  --ring: oklch(0.6 0.105 66);
+  --muted: oklch(0.935 0.011 85);
+  --muted-foreground: oklch(0.39 0.026 57);
+  --border: oklch(0.49 0.095 62 / 26%);
+  --input: oklch(0.935 0.011 85);
+  --ring: oklch(0.49 0.095 62);
   --sidebar: oklch(0.985 0.014 84);
   --sidebar-foreground: oklch(0.26 0.02 58);
   --sidebar-primary: oklch(0.6 0.105 66);
@@ -116,15 +121,20 @@ html[data-theme="light"] {
   --sidebar-border: oklch(0.6 0.105 66 / 24%);
   --sidebar-ring: oklch(0.6 0.105 66);
 
-  --gold: oklch(0.6 0.105 66);
+  --gold: oklch(0.49 0.095 62);
   --gold-deep: oklch(0.48 0.095 56);
   --champagne: oklch(0.88 0.05 88);
   --copper: oklch(0.54 0.12 44);
   --brick: oklch(0.48 0.17 30);
   --maroon: oklch(0.36 0.1 30);
   --ink: oklch(0.22 0.018 58);
+  --on-image: oklch(0.98 0.012 88);
+  --on-image-muted: oklch(0.88 0.02 85);
+  --on-gold: oklch(0.12 0.02 45);
+  --hero-panel: oklch(0.09 0.015 40 / 0.84);
+  --hero-panel-border: oklch(0.88 0.1 85 / 0.35);
 
-  --gradient-gold: linear-gradient(135deg, oklch(0.76 0.1 80) 0%, oklch(0.6 0.105 66) 50%, oklch(0.46 0.095 56) 100%);
+  --gradient-gold: linear-gradient(135deg, oklch(0.88 0.1 85) 0%, oklch(0.75 0.13 77) 50%, oklch(0.62 0.11 63) 100%);
   --gradient-ember: linear-gradient(135deg, oklch(0.6 0.16 44) 0%, oklch(0.44 0.15 32) 100%);
   --gradient-dark-fade: linear-gradient(180deg, transparent 0%, oklch(0.96 0.016 82 / 0.6) 40%, oklch(0.945 0.02 82 / 0.98) 100%);
   --gradient-spotlight: radial-gradient(ellipse at 50% 30%, oklch(0.6 0.105 66 / 0.12) 0%, transparent 60%);
@@ -145,7 +155,7 @@ html[data-theme="light"] .glass-strong {
   border-color: oklch(0.63 0.09 68 / 0.3);
 }
 /* Hero stays cinematic dark in both themes — keep the dark vignette, no light override */
-html[data-theme="light"] .shimmer-gold {
+html[data-theme="light"] .shimmer-gold:not(.cinematic-hero .shimmer-gold) {
   background: linear-gradient(110deg, oklch(0.68 0.1 72) 0%, oklch(0.5 0.09 58) 50%, oklch(0.74 0.1 78) 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -251,6 +261,28 @@ html[data-theme="light"] .bg-card {
     border: 1px solid oklch(0.84 0.16 84 / 0.22);
   }
 
+  /* The food-film area remains dark in both themes, including its navigation tiles. */
+  html[data-theme="light"] .cinematic-hero .glass-strong,
+  .cinematic-hero .glass-strong {
+    background: var(--hero-panel);
+    border-color: var(--hero-panel-border);
+    color: var(--on-image);
+  }
+  .cinematic-hero .glass-strong .text-muted-foreground {
+    color: var(--on-image-muted);
+  }
+  .cinematic-hero .glass-strong.text-\[var\(--gold\)\],
+  .cinematic-hero .glass-strong .text-\[var\(--gold\)\] {
+    color: oklch(0.88 0.12 84);
+  }
+  .cinematic-hero .shimmer-gold {
+    background: linear-gradient(110deg, oklch(0.91 0.11 87), oklch(0.99 0.025 90), oklch(0.76 0.13 76));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .hero-vignette {
     background:
       radial-gradient(ellipse at center, transparent 0%, oklch(0.05 0.01 40 / 0.55) 70%, oklch(0.04 0.01 40 / 0.95) 100%),
@@ -329,4 +361,18 @@ html[data-theme="light"] .bg-card {
   }
   .scroll-x-snap::-webkit-scrollbar { display: none; }
   .snap-item { scroll-snap-align: start; }
+}
+
+/* Unlayered theme overrides must remain unlayered to beat the light-mode glass rules. */
+html[data-theme="light"] .cinematic-hero .glass-strong {
+  background: var(--hero-panel);
+  border-color: var(--hero-panel-border);
+  color: var(--on-image);
+}
+html[data-theme="light"] .cinematic-hero .glass-strong .text-muted-foreground {
+  color: var(--on-image-muted);
+}
+html[data-theme="light"] .cinematic-hero .glass-strong.text-\[var\(--gold\)\],
+html[data-theme="light"] .cinematic-hero .glass-strong .text-\[var\(--gold\)\] {
+  color: oklch(0.88 0.12 84);
 }

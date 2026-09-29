@@ -19,6 +19,8 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:title", content: "أنوار المدينة | الطعم المصري بصياغة سينمائية" },
       { property: "og:description", content: "احجز طاولتك أو اطلب توصيل خلال ٣٠ دقيقة." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Home,
@@ -62,8 +64,8 @@ function Home() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.07_0.01_40)] via-transparent to-transparent" />
                   </div>
                   <div className="absolute bottom-0 inset-x-0 p-3 sm:p-5">
-                    <div className="font-display text-sm sm:text-xl text-[oklch(0.96_0.02_85)] group-hover:text-[var(--gold)] transition-colors">{c.label}</div>
-                    <div className="text-[10px] sm:text-xs text-[oklch(0.96_0.02_85/0.75)] mt-1 line-clamp-2">{c.tagline}</div>
+                     <div className="font-display text-sm sm:text-xl text-[var(--on-image)] group-hover:text-[var(--on-image)] transition-colors">{c.label}</div>
+                     <div className="text-[10px] sm:text-xs text-[var(--on-image-muted)] mt-1 line-clamp-2">{c.tagline}</div>
                   </div>
                 </Link>
               </motion.div>
@@ -121,7 +123,7 @@ function Home() {
 
 
       {/* Trust strip */}
-      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-[oklch(0.07_0.01_40)]">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-5 md:px-8 border-y border-border bg-foreground text-background">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 text-center">
           {[
             { k: "+25", v: "سنة خبرة" },
@@ -130,8 +132,8 @@ function Home() {
             { k: "30د", v: "متوسط التوصيل" },
           ].map((s) => (
             <div key={s.v}>
-              <div className="font-poster text-2xl sm:text-4xl text-gold">{s.k}</div>
-              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] text-[oklch(0.74_0.03_75)] mt-2">{s.v}</div>
+              <div className="font-poster text-2xl sm:text-4xl">{s.k}</div>
+              <div className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] opacity-80 mt-2">{s.v}</div>
             </div>
           ))}
         </div>
