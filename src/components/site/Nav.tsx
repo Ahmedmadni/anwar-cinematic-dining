@@ -5,6 +5,7 @@ import { ShoppingBag, Menu as MenuIcon, X, Sun, Moon, Languages } from "lucide-r
 import { useState } from "react";
 import { usePrefs } from "@/lib/preferences";
 import { ReadingSettings } from "@/components/site/ReadingSettings";
+import logo from "@/assets/logo-arch.png";
 
 type NavLink = {
   to: "/" | "/menu" | "/branches" | "/offers" | "/gallery" | "/reviews" | "/reservation" | "/about";
@@ -37,9 +38,7 @@ export function Nav() {
       <div className="mx-auto max-w-7xl px-4 md:px-6 mt-3">
         <div className="glass-strong rounded-2xl px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group min-w-0 shrink">
-            <span className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-xl bg-gradient-gold flex items-center justify-center text-[oklch(0.1_0.012_40)] font-poster text-base sm:text-xl shadow-gold">
-              أم
-            </span>
+            <img src={logo} alt="" width={1024} height={1024} className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 object-contain" />
             <div className="leading-tight min-w-0">
               <div className="font-poster text-base sm:text-xl text-gold truncate">أنوار المدينة</div>
               <div className="hidden sm:block text-[10px] tracking-[0.35em] text-muted-foreground">MAGHAGHA · 1998</div>
