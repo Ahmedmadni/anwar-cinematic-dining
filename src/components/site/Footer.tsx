@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import logo from "@/assets/logo-arch.png";
 
 export function Footer() {
   return (
@@ -6,7 +7,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
-            <span className="h-12 w-12 rounded-full bg-gradient-gold flex items-center justify-center text-[hsl(0_0%_8%)] font-bold shadow-gold">أم</span>
+            <img src={logo} alt="" width={1024} height={1024} loading="lazy" className="h-16 w-16 shrink-0 object-contain" />
             <div>
               <div className="font-display text-2xl text-gold">أنوار المدينة</div>
               <div className="text-[10px] tracking-[0.3em] text-muted-foreground">شركة المدني العالمية للاستثمار</div>
